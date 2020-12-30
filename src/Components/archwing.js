@@ -1,21 +1,30 @@
+import CDNBase from "./utils";
 import styled from "styled-components";
+import ItemCard from "./item-card";
+import StyledImage from "./styled-image";
+import Items from "warframe-items";
 
-const Items = require('warframe-items')
-const CDNBase = 'https://cdn.warframestat.us/img/';
 const archwings = new Items({category: ['Archwing']});
 
-const DetailCard = styled.div`
-    border: 1px solid #CCC;
-    padding: 1.5em;
-    margin: 0 0 1em 0;
-`;
+const StyledAbility = styled.div`
+    border: 1px solid #7F7A82;
+    border-left:4px solid;
+    border-radius:4px;
+    background: #28282A;
+    margin: 0 0 1em;
+    padding: 1em;
+
+    h2 {
+        margin: 0;
+    }
+`
 
 const Ability = (props) => {
     return (
-        <div key={props.name}>
+        <StyledAbility key={props.name}>
             <h2>{props.name}</h2>
             <p>{props.description}</p>
-        </div>
+        </StyledAbility>
     )
 }
 
@@ -29,12 +38,13 @@ const Abilities = (props) => {
 
 const Archwing = (props) => {
     return (
-        <DetailCard>
+        <ItemCard>
             <h1>{props.name}</h1>
             <p>{props.description}</p>
-            <img alt="" src={CDNBase + props.imageName}/>
+            <StyledImage alt="" src={CDNBase + props.imageName}/>
+            <h3>Abilities</h3>
             <Abilities abilities={props.abilities} />
-        </DetailCard>
+        </ItemCard>
     )
 }
 

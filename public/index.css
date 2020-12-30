@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'futura medium';
+  src: url('./fonts/futura\ medium/Futura Medium.otf');
+}
+
+body {
+    font: 16px "futura medium", sans-serif;
+    margin: 20px;
+  }
