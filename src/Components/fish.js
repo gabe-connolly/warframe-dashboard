@@ -9,8 +9,8 @@ const Fish = (props) => {
     return (
         <ItemCard>
             <h1>{props.name}</h1>
-            <p>{props.description}</p>
             <StyledImage alt="" src={CDNBase + props.imageName}/>
+            <p>{props.description}</p>
         </ItemCard>
     )
 }
