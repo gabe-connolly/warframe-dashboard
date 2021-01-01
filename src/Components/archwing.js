@@ -2,9 +2,9 @@ import CDNBase from "./utils";
 import styled from "styled-components";
 import ItemCard from "./item-card";
 import StyledImage from "./styled-image";
-import Items from "warframe-items";
 
-const archwings = new Items({category: ['Archwing']});
+const React = require('react');
+const Items = require('warframe-items')
 
 const StyledAbility = styled.div`
     border: 1px solid #7F7A82;
@@ -48,9 +48,18 @@ const Archwing = (props) => {
     )
 }
 
-const ArchwingsList = () => {
-    const list = [...archwings]
-    return list.map(archwing => <Archwing key={archwing.name} {...archwing}/>)
+class ArchwingsList extends React.Component {
+    render() {
+        const filterText = this.props.filterText;
+        const archwings = new Items({category: ['Archwing']});
+        let list = [...archwings]
+        if (filterText) {
+            list = list.filter(item => {
+                return item.name.toLowerCase().includes(filterText)
+            })
+        }
+        return list.map(archwing => <Archwing key={archwing.name} {...archwing}/>)
+    }
 }
 
 export default ArchwingsList;

@@ -1,9 +1,9 @@
 import CDNBase from "./utils";
 import ItemCard from "./item-card";
 import StyledImage from "./styled-image";
-import Items from "warframe-items";
 
-const fishItems = new Items({category: ['Fish']});
+const React = require('react');
+const Items = require('warframe-items')
 
 const Fish = (props) => {
     return (
@@ -15,17 +15,28 @@ const Fish = (props) => {
     )
 }
 
-const FishList = () => {
-    let uniqueFishNames = [];
-    let deDupedFish = [];
-    const fish = [...fishItems]
-    fish.forEach((fish) => {
-        if (!uniqueFishNames.includes(fish.name)) {
-            uniqueFishNames.push(fish.name);
-            deDupedFish.push(fish);
+class FishList extends React.Component {
+    render() {
+        const filterText = this.props.filterText;
+        const fishItems = new Items({category: ['Fish']});
+        let uniqueFishNames = [];
+        let deDupedFish = [];
+        const fish = [...fishItems]
+        fish.forEach((fish) => {
+            if (!uniqueFishNames.includes(fish.name)) {
+                uniqueFishNames.push(fish.name);
+                deDupedFish.push(fish);
+            }
+        })
+        
+        if (filterText) {
+            deDupedFish = deDupedFish.filter(item => {
+                return item.name.toLowerCase().includes(filterText)
+            })
         }
-    })
-    return deDupedFish.map(fish => <Fish key={fish.uniqueName} {...fish}/>)
+
+        return deDupedFish.map(fish => <Fish key={fish.uniqueName} {...fish}/>)
+    }
 }
 
 export default FishList;

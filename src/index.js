@@ -3,12 +3,11 @@
  * https://github.com/WFCD
  * https://github.com/WFCD/warframe-items
  */
-import { render } from '@testing-library/react';
+//import Items from "warframe-items";
 import ArchwingsList from './Components/archwing';
 import FishList from './Components/fish';
 import ItemCard from './Components/item-card';
 
-// const Items = require('warframe-items')
 const React = require('react');
 const ReactDOM = require('react-dom');
 const itemCategories = [
@@ -36,22 +35,30 @@ const itemCategories = [
   'Warframes'
 ]
 
-const CategorySelectOptions = () => {
-  const categoryOptions = itemCategories.map(category => {
-    return <option key={category} value={category}>{category}</option>
-  })
-
-  return categoryOptions;
-}
-
-class ItemSearch extends React.Component {
+class SearchResults extends React.Component {
   render() {
+    const filterText = this.props.filterText;
+
+    if (!this.props.filterText && !this.props.filterCategory) {
+      return null;
+    }
+
+    let results;
+    switch (this.props.filterCategory) {
+      case 'Fish':
+        results = <FishList key="FishList" filterText={filterText}/>
+        break;
+      case 'Archwing':
+        results = <ArchwingsList key="ArchwingsList" filterText={filterText}/>
+        break;
+      default:
+        results = <p>No results found for {this.props.filterCategory}</p>
+        break;
+    }
+
     return (
       <ItemCard>
-        <input type="text" name="searchText" value={this.props.searchText} onChange={this.props.handleInputChange}/>
-        <select name="searchCategory" value={this.props.searchCategory} onChange={this.props.handleInputChange}>
-          <CategorySelectOptions/>
-        </select>
+        {results}
       </ItemCard>
     )
   }
@@ -61,10 +68,10 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchCategory: '',
-      searchText: '',
+      filterCategory: '',
+      filterText: '',
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange(event) {
@@ -78,15 +85,21 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    return [
-      <ItemSearch
-        key="SearchBox"
-        searchCategory={this.searchCategory}
-        searchText={this.searchText}
-        handleInputChange={this.handleInputChange}/>,
-      //<FishList key="FishList"/>,
-      //<ArchwingsList key="ArchwingsList" />
-    ]
+    const categoryOptions = itemCategories.map(category => {
+      return <option key={category} value={category}>{category}</option>
+    })
+  
+    return (
+      <div>
+        <ItemCard>
+          <input type="text" name="filterText" value={this.state.filterText} onChange={this.handleInputChange}/>
+          <select name="filterCategory" value={this.state.filterCategory} onChange={this.handleInputChange}>
+            {categoryOptions}
+          </select>
+        </ItemCard>
+        <SearchResults filterCategory={this.state.filterCategory} filterText={this.state.filterText}/>
+      </div>
+    )
   }
 }
 
