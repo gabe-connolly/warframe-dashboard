@@ -3,37 +3,13 @@
  * https://github.com/WFCD
  * https://github.com/WFCD/warframe-items
  */
-//import Items from "warframe-items";
-import ArchwingsList from './Components/archwing';
-import FishList from './Components/fish';
-import ItemCard from './Components/item-card';
+import { itemCategories } from './Components/item-categories';
+import { ItemCard } from './Components/item-card';
+import ArchwingsList  from './Components/archwing';
+import FishList  from './Components/fish';
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const itemCategories = [
-  'All',
-  'Arcanes',
-  'Archwing',
-  'Arch-Gun',
-  'Arch-Melee',
-  'Corpus',
-  'Enemy',
-  'Fish',
-  'Gear',
-  'Glyphs',
-  'Melee',
-  'Misc',
-  'Mods',
-  'Pets',
-  'Primary',
-  'Quests',
-  'Relics',
-  'Resources',
-  'Secondary',
-  'Sentinels',
-  'Skins',
-  'Warframes'
-]
 
 class SearchResults extends React.Component {
   render() {
