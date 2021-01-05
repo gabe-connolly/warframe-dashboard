@@ -4,13 +4,6 @@ import StyledImage from './StyledImage';
 
 const React = require('react');
 
-class FishList extends React.Component {
-    render() {
-        const items = [...this.props.items];
-        return items.map(fish => <Fish key={fish.uniqueName} {...fish}/>)
-    }
-}
-
 const Fish = (props) => {
     return (
         <ItemCard>
@@ -21,4 +14,4 @@ const Fish = (props) => {
     )
 }
 
-export default FishList;
+export default Fish;

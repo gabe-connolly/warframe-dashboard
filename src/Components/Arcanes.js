@@ -4,22 +4,18 @@ import ItemDetailCard from './ItemDetailCard';
 import StyledImage from './StyledImage';
 import React from 'react';
 
-class ArcanesList extends React.Component {
+class Arcane extends React.Component {
     render() {
-        return this.props.items.map(item => <Arcane key={item.name} {...item}/>)
+        return (
+            <ItemCard>
+                <h1>{this.props.name}</h1>
+                <p>{this.props.description}</p>
+                <StyledImage alt="" src={CDNBase + this.props.imageName}/>
+                <h3>Ranks</h3>
+                <LevelStats levelStats={this.props.levelStats} />
+            </ItemCard>
+        )
     }
-}
-
-const Arcane = (props) => {
-    return (
-        <ItemCard>
-            <h1>{props.name}</h1>
-            <p>{props.description}</p>
-            <StyledImage alt="" src={CDNBase + props.imageName}/>
-            <h3>Ranks</h3>
-            <LevelStats levelStats={props.levelStats} />
-        </ItemCard>
-    )
 }
 
 const LevelStats = (props) => {
@@ -48,4 +44,4 @@ const LevelStat = (props) => {
     )
 }
 
-export default ArcanesList;
+export default Arcane;

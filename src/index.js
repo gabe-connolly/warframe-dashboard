@@ -5,9 +5,10 @@
  */
 import { itemCategories } from './Components/item-categories';
 import ItemCard from './Components/ItemCard';
-import ArchwingList  from './Components/Archwing';
-import ArcanesList  from './Components/Arcanes';
-import FishList  from './Components/Fish';
+import Archwing  from './Components/Archwing';
+import Arcane  from './Components/Arcanes';
+import Fish  from './Components/Fish';
+import ItemList from './Components/ItemList';
 
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -149,19 +150,18 @@ class SearchResults extends React.Component {
       return null;
     }
 
-    const ListComponents = {
-      ArchwingList,
-      ArcanesList,
-      FishList,
+    const Components = {
+      Archwing,
+      'Arcanes': Arcane,
+      Fish,
     }
 
-    const ResultsList = ListComponents[category + 'List'];
-    
+    const ItemComponent = Components[category];
     const items = this.props.items;
-
+  
     return (
       <ItemCard>
-        <ResultsList key='ResultList' filterText={filterText} items={items} />
+        <ItemList key='ResultList' filterText={filterText} items={items} itemSingleComponent={ItemComponent} />
       </ItemCard>
     )
   }

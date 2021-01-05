@@ -4,12 +4,6 @@ import ItemDetailCard from './ItemDetailCard';
 import StyledImage from './StyledImage';
 import React from 'react';
 
-class ArchwingList extends React.Component {
-    render() {
-        return this.props.items.map(item => <Archwing key={item.name} {...item}/>)
-    }
-}
-
 const Archwing = (props) => {
     return (
         <ItemCard>
@@ -37,4 +31,4 @@ const Ability = (props) => {
     )
 }
 
-export default ArchwingList;
+export default Archwing;
