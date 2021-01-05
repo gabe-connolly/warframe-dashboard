@@ -156,6 +156,7 @@ class SearchResults extends React.Component {
     }
 
     const ResultsList = ListComponents[category + 'List'];
+    
     const items = this.props.items;
 
     return (
