@@ -1,39 +1,13 @@
-import CDNBase from "./utils";
-import styled from "styled-components";
-import ItemCard from "./item-card";
-import StyledImage from "./styled-image";
+import { CDNBase } from './utils';
+import ItemCard from './ItemCard';
+import ItemDetailCard from './ItemDetailCard';
+import StyledImage from './StyledImage';
+import React from 'react';
 
-const React = require('react');
-const Items = require('warframe-items')
-
-const StyledAbility = styled.div`
-    border: 1px solid #7F7A82;
-    border-left:4px solid;
-    border-radius:4px;
-    background: #28282A;
-    margin: 0 0 1em;
-    padding: 1em;
-
-    h2 {
-        margin: 0;
+class ArchwingList extends React.Component {
+    render() {
+        return this.props.items.map(item => <Archwing key={item.name} {...item}/>)
     }
-`
-
-const Ability = (props) => {
-    return (
-        <StyledAbility key={props.name}>
-            <h2>{props.name}</h2>
-            <p>{props.description}</p>
-        </StyledAbility>
-    )
-}
-
-const Abilities = (props) => {
-    const list = props.abilities.map((ability) => {
-        return <Ability key={ability.name} {...ability} />
-    })
-
-    return list;
 }
 
 const Archwing = (props) => {
@@ -48,18 +22,19 @@ const Archwing = (props) => {
     )
 }
 
-class ArchwingsList extends React.Component {
-    render() {
-        const filterText = this.props.filterText;
-        const archwings = new Items({category: ['Archwing']});
-        let list = [...archwings]
-        if (filterText) {
-            list = list.filter(item => {
-                return item.name.toLowerCase().includes(filterText)
-            })
-        }
-        return list.map(archwing => <Archwing key={archwing.name} {...archwing}/>)
-    }
+const Abilities = (props) => {
+    return props.abilities.map((ability) => {
+        return <Ability key={ability.name} {...ability} />
+    })
 }
 
-export default ArchwingsList;
+const Ability = (props) => {
+    return (
+        <ItemDetailCard key={props.name}>
+            <h2>{props.name}</h2>
+            <p>{props.description}</p>
+        </ItemDetailCard>
+    )
+}
+
+export default ArchwingList;

@@ -4,7 +4,6 @@ export const itemCategories = [
     'Archwing',
     'Arch-Gun',
     'Arch-Melee',
-    'Corpus',
     'Enemy',
     'Fish',
     'Gear',
