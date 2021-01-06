@@ -3,12 +3,15 @@
  * https://github.com/WFCD
  * https://github.com/WFCD/warframe-items
  */
+import './index.css';
 import { itemCategories } from './Components/item-categories';
 import ItemCard from './Components/ItemCard';
 import Archwing  from './Components/Archwing';
 import Arcane  from './Components/Arcanes';
 import Fish  from './Components/Fish';
+import GenericItem from './Components/GenericItem';
 import ItemList from './Components/ItemList';
+import Sentinel  from './Components/Sentinels';
 
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -125,18 +128,21 @@ class Dashboard extends React.Component {
     })
 
     return (
-      <div>
-        <ItemCard>
-          <input type="text" name="filterText" value={this.state.filterText} onChange={this.handleInputChange}/>
-          <select name="category" value={this.state.category} onChange={this.handleInputChange}>
-            {categoryOptions}
-          </select>
-        </ItemCard>
-        <SearchResults
-          category={this.state.category}
-          filterText={this.state.filterText}
-          items={this.state.filteredItems}/>
-      </div>
+      <main>
+        <div>
+            <input type="text" name="filterText" value={this.state.filterText} onChange={this.handleInputChange}/>
+            <select name="category" value={this.state.category} onChange={this.handleInputChange}>
+              {categoryOptions}
+            </select>
+        </div>
+        <div>
+          <SearchResults
+            className="clearfix"
+            category={this.state.category}
+            filterText={this.state.filterText}
+            items={this.state.filteredItems}/>
+        </div>
+      </main>
     )
   }
 }
@@ -154,15 +160,14 @@ class SearchResults extends React.Component {
       Archwing,
       'Arcanes': Arcane,
       Fish,
+      'Sentinels': Sentinel,
     }
 
-    const ItemComponent = Components[category];
+    const ItemComponent = Components[category] !== undefined ? Components[category] : GenericItem;
     const items = this.props.items;
   
     return (
-      <ItemCard>
-        <ItemList key='ResultList' filterText={filterText} items={items} itemSingleComponent={ItemComponent} />
-      </ItemCard>
+      <ItemList key='ResultList' filterText={filterText} items={items} itemSingleComponent={ItemComponent} />
     )
   }
 }

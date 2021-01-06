@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 const StyledImage = styled.img`
-    background: #4D4B54;
+    background: rgba(77, 75, 84, 0.3);
     border: 2px solid #28282A;
+    max-width: 100%;
 `;
 
-export default StyledImage
+export default StyledImage;

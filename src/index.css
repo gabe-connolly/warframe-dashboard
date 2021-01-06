@@ -1,0 +1,18 @@
+@import-normalize;
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@font-face {
+  font-family: 'futura medium';
+  src: url('./fonts/futura\ medium/Futura Medium.otf');
+}
+
+body {
+    background-color: #181819;
+    font: 16px "futura medium", sans-serif;
+    margin: 20px;
+  }
