@@ -5,7 +5,6 @@
  */
 import './index.css';
 import { itemCategories } from './Components/item-categories';
-import ItemCard from './Components/ItemCard';
 import Archwing  from './Components/Archwing';
 import Arcane  from './Components/Arcanes';
 import Fish  from './Components/Fish';
