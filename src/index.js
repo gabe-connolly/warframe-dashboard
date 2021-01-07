@@ -10,6 +10,7 @@ import Arcane  from './Components/Arcanes';
 import Fish  from './Components/Fish';
 import GenericItem from './Components/GenericItem';
 import ItemList from './Components/ItemList';
+import Mods from './Components/Mods';
 import Sentinel  from './Components/Sentinels';
 
 const React = require('react');
@@ -159,6 +160,7 @@ class SearchResults extends React.Component {
       Archwing,
       'Arcanes': Arcane,
       Fish,
+      'Mods': Mods,
       'Sentinels': Sentinel,
     }
 

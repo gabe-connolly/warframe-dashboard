@@ -1,5 +1,13 @@
 @import-normalize;
 
+
+ol,
+ul,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
 .clearfix::after {
   content: "";
   clear: both;
@@ -12,7 +20,11 @@
 }
 
 body {
-    background-color: #181819;
-    font: 16px "futura medium", sans-serif;
-    margin: 20px;
-  }
+  background-color: #181819;
+  font: 16px "futura medium", sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  font-size: 1.5em;
+}
