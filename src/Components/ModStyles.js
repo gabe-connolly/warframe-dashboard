@@ -25,9 +25,10 @@ const ModCard = styled(ItemCard)`
 
 const StyledFusionLevels = styled.ul`
     display: flex;
-    list-style-type: none;
-    justify-content: center;
     gap: 0.5em;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0 0 1em;
 
     li {
         border: 1px solid #5194B6;
