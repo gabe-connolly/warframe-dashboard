@@ -82,6 +82,7 @@ class Dashboard extends React.Component {
           if (category === 'Mods') {
             this.setModFilterProp(response, 'type');
             this.setModFilterProp(response, 'polarity');
+            this.setModFilterProp(response, 'rarity');
           }
         }
       )
@@ -158,6 +159,7 @@ class Dashboard extends React.Component {
       const keyword = currentState.filters.keyword;
       const filterPolarity = currentState.filters.mods.polarity;
       const filteredModtype = currentState.filters.mods.type;
+      const filteredRarity = currentState.filters.mods.rarity;
 
       let items = currentState.items[category];
       items = this.deDupeItems(items);
@@ -178,6 +180,12 @@ class Dashboard extends React.Component {
         if (filteredModtype) {
           items = items.filter(item => {
             return item.type === filteredModtype
+          })
+        }
+
+        if (filteredRarity) {
+          items = items.filter(item => {
+            return item.rarity === filteredRarity
           })
         }
       }
@@ -204,12 +212,16 @@ class Dashboard extends React.Component {
           <label>Filter mods by:</label>
           <PolaritiesFilter
             value={filters.mods.polarity}
-            polarity={filterProps.mods.polarity}
+            options={filterProps.mods.polarity}
             onChange={this.handleModFilterChange('polarity')}/>
           <ModTypesFilter
             value={filters.mods.type}
-            type={filterProps.mods.type}
+            options={filterProps.mods.type}
             onChange={this.handleModFilterChange('type')}/>
+          <ModRarityFilter
+            value={filters.mods.rarity}
+            options={filterProps.mods.rarity}
+            onChange={this.handleModFilterChange('rarity')}/>
       </StyledFilters>
       )
     }
@@ -258,7 +270,7 @@ class Dashboard extends React.Component {
 }
 
 const ModTypesFilter = (props) => {
-  const options = props.type.map((type) => {
+  const options = props.options.map((type) => {
     return <option key={type} value={type}>{type}</option>;
   });
   return (
@@ -269,8 +281,21 @@ const ModTypesFilter = (props) => {
   )
 }
 
+
+const ModRarityFilter = (props) => {
+  const options = props.options.map((rarity) => {
+    return <option key={rarity} value={rarity}>{rarity}</option>;
+  });
+  return (
+    <select name="modRarityFilter" value={props.value} onChange={props.onChange}>
+      <option key="default" value="">-- Rarity --</option>;
+      {options}
+    </select>
+  )
+}
+
 const PolaritiesFilter = (props) => {
-  const options = props.polarity.map((polarity) => {
+  const options = props.options.map((polarity) => {
     return <option key={polarity} value={polarity}>{polarity}</option>;
   });
   return (

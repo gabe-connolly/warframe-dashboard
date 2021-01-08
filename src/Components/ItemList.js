@@ -4,10 +4,8 @@ import styled from 'styled-components';
 const StyledItemList = styled.ul`
     display: flex;
     list-style-type: none;
-    margin: 0;
-    padding: 0;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
 `
 
 class ItemList extends React.Component {

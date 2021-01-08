@@ -2,12 +2,23 @@ import styled from 'styled-components';
 import ItemCard from './ItemCard';
 
 const ModCard = styled(ItemCard)`
+    display:flex;
     flex-basis: 256px;
     justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: space-between;
 
     figure {
         width: 100%;
         height: 256px;
+    }
+
+    @media only screen and (max-width: 512px) {
+        flex-basis: 100%;
+
+        .figure {
+            height: auto;
+        }
     }
 
     &.common {
@@ -28,7 +39,8 @@ const StyledFusionLevels = styled.ul`
     gap: 0.5em;
     justify-content: center;
     list-style-type: none;
-    margin: 0 0 1em;
+    flex-wrap: wrap;
+    margin: 1em;
 
     li {
         border: 1px solid #5194B6;
