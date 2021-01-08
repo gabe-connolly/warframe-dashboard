@@ -21,21 +21,30 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: '',
-      filterText: '',
       items: {},
+      filters: {
+        category: '',
+        keyword: '',
+        mods: {
+          type: '',
+          polarity: '',
+        }
+      },
+      filterProps: {
+        mods: {
+          types: [],
+          polarities: [],
+          rarities: [],
+        }
+      },
       filteredItems: [],
       jsonLoaded: false,
-      modPolarities: [],
-      modRarities: [],
-      modTypes: [],
-      modTypeFilter: '',
-      polarityFilter: '',
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.getItemsByCategory = this.getItemsByCategory.bind(this);
     this.setFilteredResults = this.setFilteredResults.bind(this);
     this.updateState = this.updateState.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
   }
 
   getAllItems() {
@@ -90,14 +99,19 @@ class Dashboard extends React.Component {
 
   setModPolarity(polarity) {
     // Make sure we don't create duplicates in the mod polarities array.
-    if (this.state.modPolarities.includes(polarity)) {
+    if (this.state.filterProps.mods.polarities.includes(polarity)) {
       return;
     }
 
-    let polarities = [...this.state.modPolarities];
+    let polarities = [...this.state.filterProps.mods.polarities];
     polarities.push(polarity);
+
     this.setState({
-      modPolarities: polarities
+      filterProps: {
+        mods: {
+          polarities
+        }
+      }
     })
   }
 
@@ -116,6 +130,7 @@ class Dashboard extends React.Component {
     this.updateState(event);
   }
 
+  // TODO: setModPolarities and setModTypes are too similar.  Keep it DRY by abstracting their logic to a helper method.
   setModPolarities() {
     this.setState( (currentState) => {
       let modPolarities = [];
@@ -127,8 +142,6 @@ class Dashboard extends React.Component {
     })
   }
 
-
-
   setModTypes() {
     this.setState( (currentState) => {
       let modTypes = [];
@@ -137,7 +150,7 @@ class Dashboard extends React.Component {
           modTypes.push(mod.type)
         }
       });
-      currentState.modTypes = modTypes;
+      currentState.filterProps.mods.types = modTypes;
       return currentState
     })
   }
@@ -162,18 +175,20 @@ class Dashboard extends React.Component {
 
   setFilteredResults() {
     this.setState( (currentState) => {
-      let items = currentState.items[currentState.category];
-      items = this.deDupeItems(items);
-      const filterText = currentState.filterText;
-      const filterPolarity = currentState.polarityFilter;
+      const category = currentState.filters.category;
+      const keyword = currentState.filters.keyword;
+      const filterPolarity = currentState.filters.mods.polarity;
 
-      if (filterText) {
+      let items = currentState.items[category];
+      items = this.deDupeItems(items);
+
+      if (keyword) {
           items = items.filter(item => {
-              return item.name.toLowerCase().includes(filterText)
+              return item.name.toLowerCase().includes(keyword)
           })
       }
 
-      if (currentState.category === 'Mods' && filterPolarity) {
+      if (category === 'Mods' && filterPolarity) {
         items = items.filter(item => {
           return item.polarity === filterPolarity
         })
@@ -186,26 +201,31 @@ class Dashboard extends React.Component {
   };
 
   render() {
+    const filterProps = this.state.filterProps;
+    const filters = this.state.filters;
     const categoryOptions = itemCategories.map(category => {
       return <option key={category} value={category}>{category}</option>
     })
 
     let subFilters;
-    if (this.state.category === 'Mods') {
-      subFilters = <SubFilters
-      modTypes={this.state.modTypes}
-      modTypeFilter={this.state.modTypeFilter}
-      modPolarities={this.state.modPolarities}
-      polarityFilter={this.state.polarityFilter}
-      onChange={this.handleInputChange}
+    if (filters.category === 'Mods') {
+      subFilters = <ModFilters
+      modTypes={filterProps.mods.types}
+      modPolarities={filterProps.mods.polarities}
+      modTypeFilter={filters.mods.type}
+      polarityFilter={filters.mods.polarity}
+      onChange={this.handleFilterChange}
       />
     }
+
+    const keyword = this.state.filters.keyword;
+    const filterCategory = this.state.filters.category;
 
     return (
       <main>
         <StyledFilters>
-            <input type="text" name="filterText" value={this.state.filterText} onChange={this.handleInputChange}/>
-            <select name="category" value={this.state.category} onChange={this.handleInputChange}>
+            <input type="text" name="keyword" value={keyword} onChange={this.handleFilterChange('keyword')}/>
+            <select name="category" value={filterCategory} onChange={this.handleFilterChange('category')}>
               {categoryOptions}
             </select>
         </StyledFilters>
@@ -213,25 +233,23 @@ class Dashboard extends React.Component {
         <div>
           <SearchResults
             className="clearfix"
-            category={this.state.category}
-            filterText={this.state.filterText}
+            category={filterCategory}
+            keyword={keyword}
             items={this.state.filteredItems}/>
         </div>
       </main>
     )
   }
-}
 
-const SubFilters = (props) => {
-  return (
-      <ModFilters
-        polarityFilter={props.polarityFilter}
-        modTypes={props.modTypes}
-        modTypeFilter={props.modTypeFilter}
-        modPolarities={props.modPolarities}
-        onChange={props.onChange}
-      />
-  )
+  handleFilterChange = filterType => (event) => {
+    let filters = this.state.filters;
+    filters[filterType] = event.target.value;
+    this.setState({
+      filters
+    });
+
+    this.setFilteredResults();
+  }
 }
 
 const ModFilters = (props) => {
@@ -241,11 +259,11 @@ const ModFilters = (props) => {
       <PolaritiesFilter
         polarityFilter={props.polarityFilter}
         modPolarities={props.modPolarities}
-        onChange={props.onChange}/>
+        handleFilterChange={props.onChange}/>
       <ModTypesFilter
         modTypes={props.modTypes}
         modTypeFilter={props.modTypeFilter}
-        onChange={props.onChange}/>
+        handleFilterChange={props.onChange}/>
     </StyledFilters>
   )
 }
@@ -255,7 +273,7 @@ const ModTypesFilter = (props) => {
     return <option key={type} value={type}>{type}</option>;
   });
   return (
-    <select name="modTypeFilter" value={props.modTypeFilter} onChange={props.onChange}>
+    <select name="modTypeFilter" value={props.modTypeFilter} onChange={props.handleFilterChange('mods.type')}>
       <option key="default" value="">-- Type --</option>;
       {options}
     </select>
@@ -267,7 +285,7 @@ const PolaritiesFilter = (props) => {
     return <option key={polarity} value={polarity}>{polarity}</option>;
   });
   return (
-    <select name="polarityFilter" value={props.polarityFilter} onChange={props.onChange}>
+    <select name="polarityFilter" value={props.polarityFilter} onChange={props.handleFilterChange}>
       <option key="default" value="">-- Polarity --</option>;
       {options}
     </select>
@@ -276,10 +294,10 @@ const PolaritiesFilter = (props) => {
 
 class SearchResults extends React.Component {
   render() {
-    const filterText = this.props.filterText;
+    const keyword = this.props.keyword;
     const category = this.props.category;
 
-    if (!filterText && !category) {
+    if (!keyword && !category) {
       return null;
     }
 
@@ -295,7 +313,7 @@ class SearchResults extends React.Component {
     const items = this.props.items;
   
     return (
-      <ItemList key='ResultList' filterText={filterText} items={items} itemSingleComponent={ItemComponent} />
+      <ItemList key='ResultList' keyword={keyword} items={items} itemSingleComponent={ItemComponent} />
     )
   }
 }
