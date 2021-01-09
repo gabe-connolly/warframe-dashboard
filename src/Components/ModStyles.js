@@ -13,6 +13,10 @@ const ModCard = styled(ItemCard)`
         height: 256px;
     }
 
+    .stat {
+        padding: 2px 10px;
+    }
+
     @media only screen and (max-width: 512px) {
         flex-basis: 100%;
 

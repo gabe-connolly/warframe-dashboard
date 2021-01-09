@@ -21,14 +21,16 @@ const Mod = (props) => {
         return <StyledFusionLevels>{fusionLimit}</StyledFusionLevels>
     }
 
-    const modeLevels = props.levelStats;
-    const maxedPerk = modeLevels !== undefined ? console.log(modeLevels) : '';
+    const modLevels = props.levelStats;
+    const maxModLevelIndex = modLevels !== undefined ? modLevels.length - 1 : false;
+    let maxModLevelStats = maxModLevelIndex ? modLevels[maxModLevelIndex].stats : [];
+    maxModLevelStats = maxModLevelStats.map((stat) => <div class="stat">{stat}</div>)
 
     return (
         <ModCard key={props.uniqueName} className={props.rarity.toLowerCase()}>
             <figure style={figureStyle}></figure>
             <h1>{props.name}</h1>
-            {maxedPerk}
+            {maxModLevelStats}
             <FusionLevels fusionLimit={props.fusionLimit}/>
         </ModCard>
     )
