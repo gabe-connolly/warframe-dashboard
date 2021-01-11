@@ -1,5 +1,4 @@
 export const itemCategories = [
-    'All',
     'Arcanes',
     'Archwing',
     'Arch-Gun',

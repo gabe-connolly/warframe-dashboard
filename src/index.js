@@ -62,33 +62,49 @@ class Dashboard extends React.Component {
     })
   }
 
+  stripLineSeparatorTags(string) {
+    const regex = /<LINE_SEPARATOR>/gi
+    return string.replace(regex, '');
+  }
+
   getItemsByCategory(category) {
     const dataFileUrl = `${window.location.href}/data/${category}.json`;
     fetch(dataFileUrl)
       .then(response => {
-        try {
-          const parsedJson = response.json();
-          if (parsedJson && typeof parsedJson === 'object') {
-            return parsedJson;
-          }
-        } catch (e) {
-          console.log(e);
+        return response.text();
+      })
+      .then(response => {
+        response = this.stripLineSeparatorTags(response);
+        
+        if (category === 'Mods') {
+          response = this.stripDamageTypeTags(response);
         }
+
+        return JSON.parse(response);
       })
       .then(
         (response) => {
-          this.setItems(category, response);
-
-          if (category === 'Mods') {
-            this.setModFilterProp(response, 'type');
-            this.setModFilterProp(response, 'polarity');
-            this.setModFilterProp(response, 'rarity');
+          switch (category) {
+            case 'Mods':
+              this.setModFilterProp(response, 'type');
+              this.setModFilterProp(response, 'polarity');
+              this.setModFilterProp(response, 'rarity');
+              break;
+            default:
+              break;
           }
+
+          this.setItems(category, response);
         }
       )
       .catch((error) => {
         console.error('Error:', error);
       });
+  }
+
+  stripDamageTypeTags(data) {
+    const regex = /<DT_([a-z]*)>/gi
+    return data.replace(regex, '');
   }
 
   setItems(category, data) {
@@ -161,12 +177,17 @@ class Dashboard extends React.Component {
       const filteredModtype = currentState.filters.mods.type;
       const filteredRarity = currentState.filters.mods.rarity;
 
+      if (!category) {
+        currentState.filteredItems = []
+        return currentState;
+      }
+
       let items = currentState.items[category];
       items = this.deDupeItems(items);
 
       if (keyword) {
           items = items.filter(item => {
-              return item.name.toLowerCase().includes(keyword)
+              return item.name.toLowerCase().includes(keyword.toLowerCase())
           })
       }
 
@@ -231,6 +252,7 @@ class Dashboard extends React.Component {
         <StyledFilters>
             <input type="text" name="keyword" value={keyword} onChange={this.handleFilterChange('keyword')}/>
             <select name="category" value={filterCategory} onChange={this.handleFilterChange('category')}>
+              <option value=''>-- Category --</option>
               {categoryOptions}
             </select>
         </StyledFilters>

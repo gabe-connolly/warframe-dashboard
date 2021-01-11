@@ -24,7 +24,7 @@ const Mod = (props) => {
     const modLevels = props.levelStats;
     const maxModLevelIndex = modLevels !== undefined ? modLevels.length - 1 : false;
     let maxModLevelStats = maxModLevelIndex ? modLevels[maxModLevelIndex].stats : [];
-    maxModLevelStats = maxModLevelStats.map((stat) => <div class="stat">{stat}</div>)
+    maxModLevelStats = maxModLevelStats.map((stat, idx) => <div className="stat" key={idx}>{stat}</div>)
 
     return (
         <ModCard key={props.uniqueName} className={props.rarity.toLowerCase()}>
