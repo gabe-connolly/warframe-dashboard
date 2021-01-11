@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
     this.state = {
       items: {},
       filters: {
-        category: '',
+        category: 'Mods',
         keyword: '',
         mods: {
           type: '',
