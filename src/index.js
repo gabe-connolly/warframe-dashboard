@@ -73,11 +73,7 @@ class Dashboard extends React.Component {
       })
       .then(response => {
         response = this.stripLineSeparatorTags(response);
-        
-        if (category === 'Mods') {
-          response = this.stripDamageTypeTags(response);
-        }
-
+        response = this.stripDamageTypeTags(response);
         return JSON.parse(response);
       })
       .then(
