@@ -102,10 +102,10 @@ class Dashboard extends React.Component {
   }
 
   setItems(category, data) {
-    let items = {...this.state.items}
-    items[category] = data;
-    this.setState({
-      items
+    this.setState( (currentState) => {
+      currentState.items[category] = data;
+      currentState.itemDataLoaded[category] = true;
+      return currentState;
     })
   }
 
