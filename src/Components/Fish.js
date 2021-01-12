@@ -7,8 +7,8 @@ const React = require('react');
 const Fish = (props) => {
     return (
         <ItemCard>
-            <h1>{props.name}</h1>
             <StyledImage alt="" src={CDNBase + props.imageName}/>
+            <h1>{props.name}</h1>
             <p>{props.description}</p>
         </ItemCard>
     )

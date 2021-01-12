@@ -9,9 +9,9 @@ class Sentinel extends React.Component {
     render() {
         return (
             <ItemCard>
+                <StyledImage alt="" src={CDNBase + this.props.imageName} className="small"/>
                 <h1>{this.props.name}</h1>
                 <p>{this.props.description}</p>
-                <StyledImage alt="" src={CDNBase + this.props.imageName} class="small"/>
                 <p>Armor: {this.props.armor}</p>
                 <h3>Manufacturing Requirements</h3>
                 <ManufacturingRequirements components={this.props.components} />

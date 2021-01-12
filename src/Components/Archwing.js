@@ -7,9 +7,9 @@ import React from 'react';
 const Archwing = (props) => {
     return (
         <ItemCard>
+            <StyledImage alt="" src={CDNBase + props.imageName}/>
             <h1>{props.name}</h1>
             <p>{props.description}</p>
-            <StyledImage alt="" src={CDNBase + props.imageName}/>
             <h3>Abilities</h3>
             <Abilities abilities={props.abilities} />
         </ItemCard>

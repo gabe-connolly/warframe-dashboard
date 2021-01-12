@@ -24,9 +24,9 @@ class Arcane extends React.Component {
         return (
             <ItemCard className="clearfix">
                 <ItemMain>
+                    <StyledImage alt="" src={CDNBase + this.props.imageName}/>
                     <h1>{this.props.name}</h1>
                     <p>{this.props.description}</p>
-                    <StyledImage alt="" src={CDNBase + this.props.imageName}/>
                 </ItemMain>
                 <ItemAside>
                     <h3>Ranks</h3>
