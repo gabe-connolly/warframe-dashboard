@@ -32,6 +32,7 @@ class Dashboard extends React.Component {
         }
       },
       filterProps: {
+        categories: itemCategories,
         mods: {
           type: [],
           polarity: [],
@@ -51,10 +52,8 @@ class Dashboard extends React.Component {
   }
 
   getAllItems() {
-    itemCategories.forEach(category => {
-      if (category.toLowerCase() !== 'all') {
-        this.getItemsByCategory(category)
-      }
+    this.state.filterProps.categories.forEach(category => {
+      this.getItemsByCategory(category)
     })
 
     this.setState({
