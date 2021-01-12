@@ -167,12 +167,12 @@ class Dashboard extends React.Component {
       const filteredModtype = currentState.filters.mods.type;
       const filteredRarity = currentState.filters.mods.rarity;
 
-      if (!category) {
-        currentState.filteredItems = []
+      let items = currentState.items[category];
+      if (items === undefined) {
+        currentState.filteredItems = [];
         return currentState;
       }
 
-      let items = currentState.items[category];
       items = this.deDupeItems(items);
 
       if (keyword) {
