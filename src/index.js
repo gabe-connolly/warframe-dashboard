@@ -46,7 +46,6 @@ class Dashboard extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.getItemsByCategory = this.getItemsByCategory.bind(this);
     this.setFilteredResults = this.setFilteredResults.bind(this);
-    this.updateState = this.updateState.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleModFilterChange = this.handleModFilterChange.bind(this);
   }
@@ -114,7 +113,7 @@ class Dashboard extends React.Component {
     })
   }
 
-  updateState(event) {
+  handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -123,10 +122,6 @@ class Dashboard extends React.Component {
     });
 
     this.setFilteredResults();
-  }
-
-  handleInputChange(event) {
-    this.updateState(event);
   }
 
   /**
