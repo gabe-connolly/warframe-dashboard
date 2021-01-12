@@ -147,6 +147,13 @@ class Dashboard extends React.Component {
     }
   }
 
+  /**
+   * Some categories of item (e.g. Fish) have multiple entries for a single type of item to accomodate
+   * for item size variations.  This would clutter up the search results, so there needs to be a method
+   * for removing duplicate items.
+   * 
+   * @param {array} items 
+   */
   deDupeItems(items) {
     let uniqueItems = [];
     let deDupedItems = [];
