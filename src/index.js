@@ -84,9 +84,9 @@ class Dashboard extends React.Component {
         (response) => {
           switch (category) {
             case 'Mods':
-              this.setModFilterProp(response, 'type');
-              this.setModFilterProp(response, 'polarity');
-              this.setModFilterProp(response, 'rarity');
+              this.setFilterProp('mods', response, 'type');
+              this.setFilterProp('mods', response, 'polarity');
+              this.setFilterProp('mods', response, 'rarity');
               break;
             default:
               break;
@@ -130,7 +130,7 @@ class Dashboard extends React.Component {
    * @param {array} mods 
    * @param {string} propName 
    */
-  setModFilterProp(mods, propName) {
+  setFilterProp(category, mods, propName) {
     this.setState( (currentState) => {
       let propsList = [];
       mods.forEach(mod => {
@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
       // Create a new array with only unique values
       propsList = [...new Set(propsList)];
       
-      currentState.filterProps.mods[propName] = propsList;
+      currentState.filterProps[category][propName] = propsList;
       return currentState
     })
   }
