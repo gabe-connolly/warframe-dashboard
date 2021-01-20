@@ -1,4 +1,4 @@
-import { CDNBase } from './utils';
+import { CDNBase } from '../utils';
 import { ModCard, StyledFusionLevels } from './ModStyles';
 
 const React = require('react');

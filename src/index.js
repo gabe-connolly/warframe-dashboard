@@ -3,27 +3,31 @@
  * https://github.com/WFCD
  * https://github.com/WFCD/warframe-items
  */
+import React from 'react';
+import ReactDOM  from 'react-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 import './index.css';
 import { itemCategories } from './Components/item-categories';
-import Archwing  from './Components/Archwing';
-import Arcane  from './Components/Arcanes';
-import Fish  from './Components/Fish';
-import GenericItem from './Components/GenericItem';
-import ItemList from './Components/ItemList';
-import Mods from './Components/Mods';
-import Sentinel  from './Components/Sentinels';
+
+import ModTypesFilter from './Components/mods/ModTypesFilter';
+import ModRarityFilter from './Components/mods/ModRarityFilter';
 import StyledFilters from './Components/StyledSubFilters';
+import PolaritiesFilter from './Components/mods/PolaritiesFilter';
+import SearchResults from './Components/SearchResults';
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-
-class Dashboard extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       items: {},
       filters: {
-        category: 'Mods',
+        category: '',
         keyword: '',
         mods: {
           type: '',
@@ -44,7 +48,7 @@ class Dashboard extends React.Component {
     }
     
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.getItemsByCategory = this.getItemsByCategory.bind(this);
+    this.getItemsByCategory = this.getItemDataByCategory.bind(this);
     this.setFilteredResults = this.setFilteredResults.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleModFilterChange = this.handleModFilterChange.bind(this);
@@ -52,7 +56,7 @@ class Dashboard extends React.Component {
 
   getAllItems() {
     this.state.filterProps.categories.forEach(category => {
-      this.getItemsByCategory(category)
+      this.getItemDataByCategory(category)
     })
 
     this.setState({
@@ -65,7 +69,7 @@ class Dashboard extends React.Component {
     return string.replace(regex, '');
   }
 
-  getItemsByCategory(category) {
+  getItemDataByCategory(category) {
     const dataFileUrl = `${window.location.href}/data/${category}.json`;
     fetch(dataFileUrl)
       .then(response => {
@@ -257,7 +261,6 @@ class Dashboard extends React.Component {
 
         <div>
           <SearchResults
-            className="clearfix"
             category={filterCategory}
             keyword={keyword}
             items={this.state.filteredItems}/>
@@ -287,70 +290,7 @@ class Dashboard extends React.Component {
   }
 }
 
-const ModTypesFilter = (props) => {
-  const options = props.options.map((type) => {
-    return <option key={type} value={type}>{type}</option>;
-  });
-  return (
-    <select name="modTypeFilter" value={props.value} onChange={props.onChange}>
-      <option key="default" value="">-- Type --</option>;
-      {options}
-    </select>
-  )
-}
-
-
-const ModRarityFilter = (props) => {
-  const options = props.options.map((rarity) => {
-    return <option key={rarity} value={rarity}>{rarity}</option>;
-  });
-  return (
-    <select name="modRarityFilter" value={props.value} onChange={props.onChange}>
-      <option key="default" value="">-- Rarity --</option>;
-      {options}
-    </select>
-  )
-}
-
-const PolaritiesFilter = (props) => {
-  const options = props.options.map((polarity) => {
-    return <option key={polarity} value={polarity}>{polarity}</option>;
-  });
-  return (
-    <select name="polarityFilter" value={props.value} onChange={props.onChange}>
-      <option key="default" value="">-- Polarity --</option>;
-      {options}
-    </select>
-  )
-}
-
-class SearchResults extends React.Component {
-  render() {
-    const keyword = this.props.keyword;
-    const category = this.props.category;
-
-    if (!keyword && !category) {
-      return null;
-    }
-
-    const Components = {
-      Archwing,
-      'Arcanes': Arcane,
-      Fish,
-      'Mods': Mods,
-      'Sentinels': Sentinel,
-    }
-
-    const ItemComponent = Components[category] !== undefined ? Components[category] : GenericItem;
-    const items = this.props.items;
-  
-    return (
-      <ItemList key='ResultList' keyword={keyword} items={items} itemSingleComponent={ItemComponent} />
-    )
-  }
-}
-
 ReactDOM.render(
-  <Dashboard />,
+  <App />,
   document.getElementById('root')
 );
