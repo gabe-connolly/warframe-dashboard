@@ -33,12 +33,12 @@ const ArcaneRank = (props) => {
     return (
         <StyledArcanerank>
 
-            <div class="rank-container">
-                <div class="rank-outer">
-                    <div class="rank-inner">{level}</div>
+            <div className="rank-container">
+                <div className="rank-outer">
+                    <div className="rank-inner">{level}</div>
                 </div>
             
-                <div class="description">
+                <div className="description">
                     {levelDescription}
                 </div>
             </div>
