@@ -1,5 +1,5 @@
 import { CDNBase } from './utils';
-import ItemCard from './ItemCard';
+import { ItemCard } from './ItemCard';
 import StyledImage from './StyledImage';
 
 const React = require('react');

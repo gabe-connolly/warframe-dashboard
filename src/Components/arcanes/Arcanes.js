@@ -1,22 +1,8 @@
 import { CDNBase } from '../utils';
-import ItemCard from '../ItemCard';
-import ItemDetailCard from '../ItemDetailCard';
+import { ItemMain, ItemCard } from '../ItemCard';
 import ArcaneRank from './ArcaneRank';
 import StyledImage from '../StyledImage';
 import React from 'react';
-import styled from "styled-components";
-
-const ItemMain = styled.main`
-    padding: 1em;
-
-    @media (min-width: 1024px) {
-        flex-wrap: nowrap;
-    }
-`
-
-const ItemAside = styled.aside`
-    
-`
 
 class Arcane extends React.Component {
     render() {

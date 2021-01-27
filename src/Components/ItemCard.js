@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ItemCard = styled.li`
+const ItemCard = styled.li`
     background: #070713;
     border: 1px solid #B5924E;
     border-bottom: 10px solid #F1E9B3;
@@ -22,4 +22,11 @@ export const ItemCard = styled.li`
     }
 `;
 
-export default ItemCard;
+const ItemMain = styled.main`
+    padding: 1em;
+
+    @media (min-width: 1024px) {
+        flex-wrap: nowrap;
+    }
+`
+export { ItemMain, ItemCard };

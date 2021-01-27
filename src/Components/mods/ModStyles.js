@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ItemCard from '../ItemCard';
+import { ItemCard } from '../ItemCard';
 
 const ModCard = styled(ItemCard)`
     display:flex;

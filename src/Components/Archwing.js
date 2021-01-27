@@ -1,5 +1,5 @@
 import { CDNBase } from './utils';
-import ItemCard from './ItemCard';
+import { ItemCard } from './ItemCard';
 import ItemDetailCard from './ItemDetailCard';
 import StyledImage from './StyledImage';
 import React from 'react';
