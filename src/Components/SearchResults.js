@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Archwing  from './Archwing';
-import Arcane  from './Arcanes';
+import Arcane  from './arcanes/Arcanes';
 import Fish  from './Fish';
 import GenericItem from './GenericItem';
 import ItemList from './ItemList';

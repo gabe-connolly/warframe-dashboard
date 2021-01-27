@@ -6,10 +6,12 @@
 import React from 'react';
 import ReactDOM  from 'react-dom';
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Switch,
   Route,
-  Link
+  Router,
+  Link,
+  useParams
 } from "react-router-dom";
 
 import './index.css';
@@ -217,6 +219,26 @@ class App extends React.Component {
     })
   };
 
+  handleModFilterChange = filterType => (event) => {
+    let filters = this.state.filters;
+    filters.mods[filterType] = event.target.value;
+    this.setState({
+      filters
+    });
+
+    this.setFilteredResults();
+  }
+
+  handleFilterChange = filterType => (event) => {
+    let filters = this.state.filters;
+    filters[filterType] = event.target.value;
+    this.setState({
+      filters
+    });
+
+    this.setFilteredResults();
+  }
+
   render() {
     const filterProps = this.state.filterProps;
     const filters = this.state.filters;
@@ -259,38 +281,20 @@ class App extends React.Component {
 
         {subFilters}
 
-        <div>
-          <SearchResults
-            category={filterCategory}
-            keyword={keyword}
-            items={this.state.filteredItems}/>
-        </div>
+        <Switch>
+          <Route path="/:id" children={<SearchResults
+    category={filterCategory}
+    keyword={keyword}
+    items={this.state.filteredItems}>!!!</SearchResults>} />
+        </Switch>
       </main>
     )
-  }
-
-  handleModFilterChange = filterType => (event) => {
-    let filters = this.state.filters;
-    filters.mods[filterType] = event.target.value;
-    this.setState({
-      filters
-    });
-
-    this.setFilteredResults();
-  }
-
-  handleFilterChange = filterType => (event) => {
-    let filters = this.state.filters;
-    filters[filterType] = event.target.value;
-    this.setState({
-      filters
-    });
-
-    this.setFilteredResults();
   }
 }
 
 ReactDOM.render(
-  <App />,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById('root')
 );
