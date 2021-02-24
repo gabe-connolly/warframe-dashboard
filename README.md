@@ -1,4 +1,17 @@
-# Getting Started with Create React App
+# Warframe dashboard
+
+This project is a personal learning project to explore using React to create a dynamic UI for interacting with rich data sets.  For this project, I used the data from the [warframe-items](https://github.com/WFCD/warframe-items) project, so huge thanks to the contributors on that project for their hard work.
+
+This project can be viewed online at [https://gabe-connolly.github.io/warframe-dashboard/](https://gabe-connolly.github.io/warframe-dashboard/)
+
+Project goals:
+- [x] Allow users to filter items by category
+- [x] Allow users to sub-filter item categories with deeper data sets (e.g. Mods)
+- [x] Publish project to GitHub pages
+- [x] Explore [Styled Components](https://styled-components.com/)
+- [ ] Use React Routing to allow category filters to apply based on URLs
+- [ ] Create a fully designed project homepage
+- [ ] Some of the data sets (e.g. `Misc`) have incomplete or not well formatted content.  See if the content issues can be compensated for with filters if there is a consistent pattern.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -29,42 +42,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### `npm run deploy`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Builds the app and commits to a `deploy` branch which can be used on GitHub pages.
