@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/warframe-dashboard/static/css/main.bc2b2fbb.chunk.css",
-    "main.js": "/warframe-dashboard/static/js/main.a7c66707.chunk.js",
-    "main.js.map": "/warframe-dashboard/static/js/main.a7c66707.chunk.js.map",
-    "runtime-main.js": "/warframe-dashboard/static/js/runtime-main.76af3264.js",
-    "runtime-main.js.map": "/warframe-dashboard/static/js/runtime-main.76af3264.js.map",
-    "static/js/2.b07b488f.chunk.js": "/warframe-dashboard/static/js/2.b07b488f.chunk.js",
-    "static/js/2.b07b488f.chunk.js.map": "/warframe-dashboard/static/js/2.b07b488f.chunk.js.map",
+    "main.js": "/warframe-dashboard/static/js/main.8a642511.chunk.js",
+    "main.js.map": "/warframe-dashboard/static/js/main.8a642511.chunk.js.map",
+    "runtime-main.js": "/warframe-dashboard/static/js/runtime-main.5fc6d56f.js",
+    "runtime-main.js.map": "/warframe-dashboard/static/js/runtime-main.5fc6d56f.js.map",
+    "static/js/2.87d330c6.chunk.js": "/warframe-dashboard/static/js/2.87d330c6.chunk.js",
+    "static/js/2.87d330c6.chunk.js.map": "/warframe-dashboard/static/js/2.87d330c6.chunk.js.map",
     "index.html": "/warframe-dashboard/index.html",
     "static/css/main.bc2b2fbb.chunk.css.map": "/warframe-dashboard/static/css/main.bc2b2fbb.chunk.css.map",
-    "static/js/2.b07b488f.chunk.js.LICENSE.txt": "/warframe-dashboard/static/js/2.b07b488f.chunk.js.LICENSE.txt",
+    "static/js/2.87d330c6.chunk.js.LICENSE.txt": "/warframe-dashboard/static/js/2.87d330c6.chunk.js.LICENSE.txt",
     "static/media/index.css": "/warframe-dashboard/static/media/Futura Medium.b4abcb4b.otf"
   },
   "entrypoints": [
-    "static/js/runtime-main.76af3264.js",
-    "static/js/2.b07b488f.chunk.js",
+    "static/js/runtime-main.5fc6d56f.js",
+    "static/js/2.87d330c6.chunk.js",
     "static/css/main.bc2b2fbb.chunk.css",
-    "static/js/main.a7c66707.chunk.js"
+    "static/js/main.8a642511.chunk.js"
   ]
 }
