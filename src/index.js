@@ -14,14 +14,14 @@ import {
 
 import './index.css';
 import { itemCategories } from './Components/item-categories';
-import ModFilters from './Components/mod/ModFilters';
 import StyledFilters from './Components/StyledSubFilters';
 import Mods from './Components/mod/Mods';
-import GenericItem from './Components/GenericItem';
+import GenericItemsList from './Components/GenericItem';
 import Archwings from './Components/archwing/Archwing';
 import Arcanes from './Components/arcane/Arcane';
 import Fish  from './Components/fish/Fish';
 import Sentinels from './Components/sentinel/Sentinels';
+import SecondaryWeapons from './Components/secondary/SecondaryWeapons';
 
 const routes = [
   {
@@ -41,17 +41,21 @@ const routes = [
     'component': Mods,
   },
   {
+    'path': '/secondary',
+    'component': SecondaryWeapons,
+  },
+  {
     'path': '/sentinels',
     'component': Sentinels,
   },
   {
     'path': '/',
     'component': Homepage,
-    'isExact': true,
+    'exact': true,
   },
   {
     'path': '/:generic',
-    'component': GenericItem,
+    'component': GenericItemsList,
   }
 ]
 
@@ -272,7 +276,7 @@ class App extends React.Component {
   }
 
   render() {
-    const {
+    let {
       filteredItems,
       filterProps,
       filters,
@@ -302,8 +306,13 @@ class App extends React.Component {
           <Switch>
             {
               routes.map((route) => {
-                route = {...route, keyword, items: filteredItems}
-                return <RouteWithSubRoutes key={category.toLowerCase()} {...route} />
+                let props = {...route, filters, keyword, items: filteredItems }
+                if (route.path === '/mods') {
+                  filters = filters.mods;
+                  filterProps = filterProps.mods;
+                  props = {...props, filters, filterProps,  handleModFilterChange: this.handleModFilterChange}
+                }
+                return <RouteWithSubRoutes key={category.toLowerCase()} {...props} />
               })
             }
           </Switch>

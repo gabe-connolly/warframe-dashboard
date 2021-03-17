@@ -1,4 +1,4 @@
-import { CDNBase } from '../utils';
+import { CDNBase, validItemsList } from '../utils';
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import StyledImage from '../StyledImage';
@@ -6,7 +6,12 @@ import StyledItemList from '../StyledItemList';
 import React from 'react';
 import ItemBuildComponent from '../ItemBuildComponent';
 
+
 const Sentinels = ({items}) => {
+    if (!validItemsList(items, 'sentinels')) {
+        return null;
+    }
+
     return (
         <StyledItemList>
             {
@@ -35,12 +40,13 @@ const ManufacturingRequirements = ({components, uniqueName}) => {
     }
 
     components = Object.entries(components);
+    
     return (
         <ItemDetailCard key={uniqueName}>
             {
                 components.map((component) => {
                     return (
-                        <ManufacturingRequirement key={component.uniqueName} {...component} />
+                        <ManufacturingRequirement key={component[1].uniqueName} {...component} />
                     )
                 })
             }

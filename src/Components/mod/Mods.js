@@ -1,9 +1,28 @@
 import { CDNBase } from '../utils';
 import { ModCard, StyledFusionLevels } from './ModStyles';
+import ModFilters from './ModFilters';
+import StyledItemList from '../StyledItemList';
 
 const React = require('react');
 
+const Mods = (props) => {
+    return (
+        <>
+        <ModFilters filters={props.filters} filterProps={props.filterProps} handleModFilterChange={props.handleModFilterChange}/>
+        <StyledItemList>
+            {
+                props.items.map(item => <Mod key={item.name} {...item}/>)
+            }
+        </StyledItemList>
+        </>
+    )
+}
+
 const Mod = (props) => {
+    if (props.category.toLowerCase() !== 'mods') {
+        return null;
+    }
+
     const backgroundImageUrl = CDNBase + props.imageName;
     const figureStyle = {
         color: 'red',
@@ -36,4 +55,4 @@ const Mod = (props) => {
     )
 }
 
-export default Mod;
+export default Mods;
