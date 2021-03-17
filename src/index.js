@@ -6,22 +6,24 @@
 import React from 'react';
 import ReactDOM  from 'react-dom';
 import {
-  BrowserRouter,
-  Switch,
+  BrowserRouter as Router,
+  Redirect,
   Route,
-  Router,
-  Link,
-  useParams
+  Switch,
 } from "react-router-dom";
 
 import './index.css';
 import { itemCategories } from './Components/item-categories';
-
-import ModTypesFilter from './Components/mods/ModTypesFilter';
-import ModRarityFilter from './Components/mods/ModRarityFilter';
+import ModFilters from './Components/mods/ModFilters';
 import StyledFilters from './Components/StyledSubFilters';
-import PolaritiesFilter from './Components/mods/PolaritiesFilter';
-import SearchResults from './Components/SearchResults';
+
+import ItemList from './Components/ItemList';
+import Mods from './Components/mods/Mods';
+import GenericItem from './Components/GenericItem';
+import Archwing from './Components/archwing/Archwing';
+import Arcane from './Components/arcanes/Arcane';
+import Fish  from './Components/Fish';
+import Sentinel from './Components/Sentinels';
 
 class App extends React.Component {
   constructor(props) {
@@ -240,61 +242,79 @@ class App extends React.Component {
   }
 
   render() {
-    const filterProps = this.state.filterProps;
-    const filters = this.state.filters;
-    const keyword = filters.keyword;
-    const filterCategory = filters.category;
+    const {
+      filteredItems,
+      filterProps,
+      filters,
+    } = this.state;
+
+    const {
+      keyword,
+      category,
+    } = filters;
+
     const categoryOptions = itemCategories.map(category => {
       return <option key={category} value={category}>{category}</option>
     })
 
-    let subFilters;
-    if (filters.category === 'Mods') {
-      subFilters = (
-        <StyledFilters>
-          <label>Filter mods by:</label>
-          <PolaritiesFilter
-            value={filters.mods.polarity}
-            options={filterProps.mods.polarity}
-            onChange={this.handleModFilterChange('polarity')}/>
-          <ModTypesFilter
-            value={filters.mods.type}
-            options={filterProps.mods.type}
-            onChange={this.handleModFilterChange('type')}/>
-          <ModRarityFilter
-            value={filters.mods.rarity}
-            options={filterProps.mods.rarity}
-            onChange={this.handleModFilterChange('rarity')}/>
-      </StyledFilters>
-      )
-    }
-
     return (
-      <main>
-        <StyledFilters>
-            <input type="text" name="keyword" value={keyword} onChange={this.handleFilterChange('keyword')}/>
-            <select name="category" value={filterCategory} onChange={this.handleFilterChange('category')}>
-              <option value=''>-- Category --</option>
-              {categoryOptions}
-            </select>
-        </StyledFilters>
+      <Router basename="/warframe-dashboard">
+        <main>
+          <StyledFilters>
+              <input type="text" name="keyword" value={keyword} onChange={this.handleFilterChange('keyword')}/>
+              <select name="category" value={category} onChange={this.handleFilterChange('category')}>
+                <option value=''>-- Category --</option>
+                {categoryOptions}
+              </select>
+              <Redirect to={category} />
+          </StyledFilters>
 
-        {subFilters}
+          <Switch>
+            <Route exact path="/">
+              <Homepage/>
+            </Route>
 
-        <Switch>
-          <Route path="/:id" children={<SearchResults
-    category={filterCategory}
-    keyword={keyword}
-    items={this.state.filteredItems}>!!!</SearchResults>} />
-        </Switch>
-      </main>
+            <Route path="/Archwing">
+              <ItemList key='Archwings' keyword={keyword} items={filteredItems} itemSingleComponent={Archwing} />
+            </Route>
+
+            <Route path="/Arcanes">
+              <ItemList key='Arcanes' keyword={keyword} items={filteredItems} itemSingleComponent={Arcane} />
+            </Route>
+
+            <Route path="/Fish">
+              <ItemList key='Fish' keyword={keyword} items={filteredItems} itemSingleComponent={Fish} />
+            </Route>
+
+            <Route path="/Mods">
+              <ModFilters filters={filters.mods} filterProps={filterProps.mods} handleModFilterChange={this.handleModFilterChange}/>
+              <ItemList key='Mods' keyword={keyword} items={filteredItems} itemSingleComponent={Mods} />
+            </Route>
+
+            <Route path="/Sentinels">
+              <ItemList key='Sentinels' keyword={keyword} items={filteredItems} itemSingleComponent={Sentinel} />
+            </Route>
+
+            <Route>
+              <ItemList key='ResultList' keyword={keyword} items={filteredItems} itemSingleComponent={GenericItem}/>
+            </Route>
+
+          </Switch>
+        </main>
+      </Router>
     )
   }
 }
 
+function Homepage() {
+  return (
+    <>
+      <h2>Homepage</h2>
+    </>
+  )
+}
+
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <App />,
   document.getElementById('root')
 );

@@ -9,8 +9,11 @@ const StyledFilters = styled.section`
     margin: 10px;
     padding: 1em;
 
+    input,
     select {
+        border-radius: 10px;
         margin: 0 10px;
+        padding: 0.5em 1em;
     }
 `
 

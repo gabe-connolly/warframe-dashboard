@@ -4,12 +4,12 @@ import StyledImage from './StyledImage';
 
 const React = require('react');
 
-const Fish = (props) => {
+const Fish = ({description, imageName, name}) => {
     return (
         <ItemCard>
-            <StyledImage alt="" src={CDNBase + props.imageName}/>
-            <h1>{props.name}</h1>
-            <p>{props.description}</p>
+            <StyledImage alt="" src={CDNBase + imageName}/>
+            <h1>{name}</h1>
+            <p>{description}</p>
         </ItemCard>
     )
 }
