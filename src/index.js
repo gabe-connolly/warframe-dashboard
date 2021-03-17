@@ -14,16 +14,46 @@ import {
 
 import './index.css';
 import { itemCategories } from './Components/item-categories';
-import ModFilters from './Components/mods/ModFilters';
+import ModFilters from './Components/mod/ModFilters';
 import StyledFilters from './Components/StyledSubFilters';
-
-import ItemList from './Components/ItemList';
-import Mods from './Components/mods/Mods';
+import Mods from './Components/mod/Mods';
 import GenericItem from './Components/GenericItem';
-import Archwing from './Components/archwing/Archwing';
-import Arcane from './Components/arcanes/Arcane';
-import Fish  from './Components/Fish';
-import Sentinel from './Components/Sentinels';
+import Archwings from './Components/archwing/Archwing';
+import Arcanes from './Components/arcane/Arcane';
+import Fish  from './Components/fish/Fish';
+import Sentinels from './Components/sentinel/Sentinels';
+
+const routes = [
+  {
+    'path': '/arcanes',
+    'component': Arcanes,
+  },
+  {
+    'path': '/archwing',
+    'component': Archwings,
+  },
+  {
+    'path': '/fish',
+    'component': Fish,
+  },
+  {
+    'path': '/mods',
+    'component': Mods,
+  },
+  {
+    'path': '/sentinels',
+    'component': Sentinels,
+  },
+  {
+    'path': '/',
+    'component': Homepage,
+    'isExact': true,
+  },
+  {
+    'path': '/:generic',
+    'component': GenericItem,
+  }
+]
 
 class App extends React.Component {
   constructor(props) {
@@ -266,44 +296,40 @@ class App extends React.Component {
                 <option value=''>-- Category --</option>
                 {categoryOptions}
               </select>
-              <Redirect to={category} />
+              <Redirect to={category.toLowerCase()} />
           </StyledFilters>
 
           <Switch>
-            <Route exact path="/">
-              <Homepage/>
-            </Route>
-
-            <Route path="/Archwing">
-              <ItemList key='Archwings' keyword={keyword} items={filteredItems} itemSingleComponent={Archwing} />
-            </Route>
-
-            <Route path="/Arcanes">
-              <ItemList key='Arcanes' keyword={keyword} items={filteredItems} itemSingleComponent={Arcane} />
-            </Route>
-
-            <Route path="/Fish">
-              <ItemList key='Fish' keyword={keyword} items={filteredItems} itemSingleComponent={Fish} />
-            </Route>
-
-            <Route path="/Mods">
-              <ModFilters filters={filters.mods} filterProps={filterProps.mods} handleModFilterChange={this.handleModFilterChange}/>
-              <ItemList key='Mods' keyword={keyword} items={filteredItems} itemSingleComponent={Mods} />
-            </Route>
-
-            <Route path="/Sentinels">
-              <ItemList key='Sentinels' keyword={keyword} items={filteredItems} itemSingleComponent={Sentinel} />
-            </Route>
-
-            <Route>
-              <ItemList key='ResultList' keyword={keyword} items={filteredItems} itemSingleComponent={GenericItem}/>
-            </Route>
-
+            {
+              routes.map((route) => {
+                route = {...route, keyword, items: filteredItems}
+                return <RouteWithSubRoutes key={category.toLowerCase()} {...route} />
+              })
+            }
           </Switch>
         </main>
       </Router>
     )
   }
+}
+
+// A special wrapper for <Route> that knows how to
+// handle "sub"-routes by passing them in a `routes`
+// prop to the component it renders.
+function RouteWithSubRoutes(route) {
+  return (
+    <Route
+      path={route.path}
+      render={
+        props => {
+          return (
+            // pass the sub-routes down to keep nesting
+            <route.component {...props} {...route} />
+          )
+        }
+      }
+    />
+  )
 }
 
 function Homepage() {

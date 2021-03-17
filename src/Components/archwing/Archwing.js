@@ -2,9 +2,20 @@ import { CDNBase } from '../utils';
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import StyledImage from '../StyledImage';
+import StyledItemList from '../StyledItemList';
 import React from 'react';
 
-const Archwing = ({abilities, description, imageName, name}) => {
+const Archwings = ({items}) => {
+    return (
+        <StyledItemList>
+            {
+                items.map(item => <ArchwingCard key={item.name} {...item}/>)
+            }
+        </StyledItemList>
+    )
+}
+
+const ArchwingCard = ({abilities, description, imageName, name}) => {
     return (
         <ItemCard>
             <StyledImage alt="" src={CDNBase + imageName}/>
@@ -35,4 +46,4 @@ const Ability = ({description, name}) => {
     )
 }
 
-export default Archwing;
+export default Archwings;

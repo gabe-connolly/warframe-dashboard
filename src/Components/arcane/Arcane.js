@@ -2,9 +2,20 @@ import { CDNBase } from '../utils';
 import { ItemMain, ItemCard } from '../ItemCard';
 import ArcaneRank from './ArcaneRank';
 import StyledImage from '../StyledImage';
+import StyledItemList from '../StyledItemList';
 import React from 'react';
 
-const Arcane = ({levelStats, imageName, name}) => {
+const Arcanes = ({items}) => {
+    return (
+        <StyledItemList>
+            {
+                items.map(item => <ArcaneCard key={item.name} {...item}/>)
+            }
+        </StyledItemList>
+    )
+}
+
+const ArcaneCard = ({levelStats, imageName, name}) => {
     if (name === 'Arcane') {
         return null;
     }
@@ -35,4 +46,4 @@ const Ranks = ({ranks}) => {
     return rankDetails
 }
 
-export default Arcane;
+export default Arcanes;
