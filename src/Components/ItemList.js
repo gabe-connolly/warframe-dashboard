@@ -8,17 +8,14 @@ const StyledItemList = styled.ul`
     justify-content: center;
 `
 
-class ItemList extends React.Component {
-    render() {
-        const ItemComponent = this.props.itemSingleComponent;
-        return (
-            <StyledItemList>
-                {
-                    this.props.items.map(item => <ItemComponent key={item.name} {...item}/>)
-                }
-            </StyledItemList>
-        )
-    }
+const ItemList = ({itemSingleComponent: ItemComponent, items}) => {
+    return (
+        <StyledItemList>
+            {
+                items.map(item => <ItemComponent key={item.name} {...item}/>)
+            }
+        </StyledItemList>
+    )
 }
 
 export default ItemList;

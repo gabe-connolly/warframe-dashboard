@@ -1,28 +1,168 @@
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import { CDNBase } from '../utils';
 import { ModCard, StyledFusionLevels } from './ModStyles';
-import ModFilters from './ModFilters';
+import ModFilter from './ModFilter';
 import StyledItemList from '../StyledItemList';
+import * as itemDataController from '../../controllers/itemDataController';
+import StyledFilters from '../StyledSubFilters';
 
-const React = require('react');
+function Mods() {
+    let [itemCount, setItemCount] = useState(0);
+    const [items, setItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
+    // Currently active filters
+    const [polarityFilter, setPolarityFilter] = useState('');
+    const [typeFilter, setTypeFilter] = useState('');
+    const [rarityFilter, setRarityFilter] = useState('');
 
-const Mods = (props) => {
+    // Filter options
+    const [polarityFilterOptions, setPolarityFilterOptions] = useState([]);
+    const [typeFilterOptions, setTypeFilterOptions] = useState([]);
+    const [rarityFilterOptions, setRarityFilterOptions] = useState([]);
+
+    const deDupeMods = (mods) => {
+        let deDupeMods = {};
+        mods.forEach(mod => {
+            const modLookupKey = `${mod.name}-fusion-levels-${mod.fusionLimit}`
+            if (!deDupeMods.hasOwnProperty(modLookupKey)) {
+                deDupeMods[modLookupKey] = mod;
+            }
+        })
+        return Object.values(deDupeMods);
+    }
+
+    const resetFilters = () => {
+        setPolarityFilter('');
+        setTypeFilter('');
+        setRarityFilter('');
+    }
+
+    // Can't perform a React state update on an unmounted component
+    // https://stackoverflow.com/a/60907638
+    useEffect(() => {
+        let isMounted = true;
+        axios.get(`/warframe-dashboard/data/Mods.json`)
+            .then(response => {
+                if (isMounted) {
+                    let itemData = JSON.stringify(response.data);
+                    itemData = itemDataController.stripDamageTypeTags(itemData);
+                    itemData = itemDataController.stripLineSeparatorTags(itemData);
+                    itemData = JSON.parse(itemData);
+                    itemData = deDupeMods(itemData);
+                    setItems(itemData);
+                    setItemCount(itemData.length);
+                }
+            })
+
+            return () => { isMounted = false };
+    }, [itemCount]);
+
+    useEffect(() => {
+        const filterMods = () => {
+            let filteredItems = [...items];
+            if (polarityFilter) {
+                filteredItems = filteredItems.filter(item => {
+                    return item.polarity === polarityFilter
+                })
+            }
+
+            if (typeFilter) {
+                filteredItems = filteredItems.filter(item => {
+                    return item.type === typeFilter
+                })
+            }
+
+            if (rarityFilter) {
+                filteredItems = filteredItems.filter(item => {
+                    return item.rarity === rarityFilter
+                })
+            }
+
+            setFilteredItems(filteredItems);
+        }
+
+        filterMods();
+    }, [polarityFilter, typeFilter, rarityFilter, items]);
+
+    useEffect(() => {
+        const modPolarities = itemDataController.getFilterProps(items, 'polarity');
+        setPolarityFilterOptions(modPolarities);
+    }, [items])
+
+    useEffect(() => {
+        const modTypes = itemDataController.getFilterProps(items, 'type');
+            setTypeFilterOptions(modTypes);
+    }, [items])
+
+    useEffect(() => {
+        const modRarities = itemDataController.getFilterProps(items, 'rarity');
+            setRarityFilterOptions(modRarities);
+    }, [items])
+
+    const modFilters = [
+        {
+            'defaultOption': 'Polarity',
+            'options': polarityFilterOptions,
+            'value': polarityFilter,
+            'onChange': (event) => {
+                setPolarityFilter(event.target.value);
+            }
+        },
+        {
+            'defaultOption': 'Type',
+            'options': typeFilterOptions,
+            'value': typeFilter,
+            'onChange': (event) => {
+                setTypeFilter(event.target.value);
+            }
+        },
+        {
+            'defaultOption': 'Rarity',
+            'options': rarityFilterOptions,
+            'value': rarityFilter,
+            'onChange': (event) =>  {
+                setRarityFilter(event.target.value);
+            }
+        }
+    ]
+
     return (
         <>
-        <ModFilters filters={props.filters} filterProps={props.filterProps} handleModFilterChange={props.handleModFilterChange}/>
-        <StyledItemList>
+        <StyledFilters>
+            <label>Filter mods by:</label>
             {
-                props.items.map(item => <Mod key={item.name} {...item}/>)
+                modFilters.map(filter => {
+                    return (
+                        <ModFilter
+                            defaultOption={filter.defaultOption}
+                            name={filter.name}
+                            onChange={filter.onChange}
+                            options={filter.options}
+                            value={filter.value}
+                        />
+                    )
+                })
             }
+            <button onClick={resetFilters}>Reset filters</button>
+        </StyledFilters>
+        <StyledItemList>
+            <ModList items={filteredItems}/>
         </StyledItemList>
         </>
     )
 }
 
-const Mod = (props) => {
-    if (props.category.toLowerCase() !== 'mods') {
-        return null;
-    }
+const ModList = ({items}) => {
+    return items.map(mod => {
+        const modKey = `${mod.name}-limit-${mod.fusionLimit}`;
+        return (
+            <Mod key={modKey} {...mod}/>
+        )
+    })
+}
 
+const Mod = (props) => {
     const backgroundImageUrl = CDNBase + props.imageName;
     const figureStyle = {
         color: 'red',

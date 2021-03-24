@@ -24,10 +24,12 @@ import Sentinels from './Components/sentinel/Sentinels';
 import SecondaryWeapons from './Components/secondary/SecondaryWeapons';
 
 const routes = [
+
   {
     'path': '/arcanes',
     'component': Arcanes,
   },
+  /*
   {
     'path': '/archwing',
     'component': Archwings,
@@ -36,10 +38,12 @@ const routes = [
     'path': '/fish',
     'component': Fish,
   },
+  */
   {
     'path': '/mods',
     'component': Mods,
   },
+  /*
   {
     'path': '/secondary',
     'component': SecondaryWeapons,
@@ -56,7 +60,7 @@ const routes = [
   {
     'path': '/:generic',
     'component': GenericItemsList,
-  }
+  }*/
 ]
 
 class App extends React.Component {
@@ -84,12 +88,14 @@ class App extends React.Component {
       filteredItems: [],
       jsonLoaded: false,
     }
-    
+
+    /*
     this.handleInputChange = this.handleInputChange.bind(this);
     this.getItemsByCategory = this.getItemDataByCategory.bind(this);
     this.setFilteredResults = this.setFilteredResults.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleModFilterChange = this.handleModFilterChange.bind(this);
+    */
   }
 
   getAllItems() {
@@ -102,46 +108,6 @@ class App extends React.Component {
     })
   }
 
-  stripLineSeparatorTags(string) {
-    const regex = /<LINE_SEPARATOR>/gi
-    return string.replace(regex, '');
-  }
-
-  getItemDataByCategory(category) {
-    const dataFileUrl = `${window.location.href}/data/${category}.json`;
-    fetch(dataFileUrl)
-      .then(response => {
-        return response.text();
-      })
-      .then(response => {
-        response = this.stripLineSeparatorTags(response);
-        response = this.stripDamageTypeTags(response);
-        return JSON.parse(response);
-      })
-      .then(
-        (response) => {
-          switch (category) {
-            case 'Mods':
-              this.setFilterProp('mods', response, 'type');
-              this.setFilterProp('mods', response, 'polarity');
-              this.setFilterProp('mods', response, 'rarity');
-              break;
-            default:
-              break;
-          }
-
-          this.setItems(category, response);
-        }
-      )
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }
-
-  stripDamageTypeTags(data) {
-    const regex = /<DT_([a-z]*)>/gi
-    return data.replace(regex, '');
-  }
 
   setItems(category, data) {
     this.setState( (currentState) => {
@@ -161,30 +127,9 @@ class App extends React.Component {
     this.setFilteredResults();
   }
 
-  /**
-   * Populate an array of properties than can be used to filter Mods.
-   * 
-   * @param {array} mods 
-   * @param {string} propName 
-   */
-  setFilterProp(category, mods, propName) {
-    this.setState( (currentState) => {
-      let propsList = [];
-      mods.forEach(mod => {
-        propsList.push(mod[propName])
-      });
-
-      // Create a new array with only unique values
-      propsList = [...new Set(propsList)];
-      
-      currentState.filterProps[category][propName] = propsList;
-      return currentState
-    })
-  }
-
   componentDidMount() {
     if (!this.state.jsonLoaded) {
-      this.getAllItems();
+      //this.getAllItems();
     }
   }
 
@@ -192,8 +137,8 @@ class App extends React.Component {
    * Some categories of item (e.g. Fish) have multiple entries for a single type of item to accomodate
    * for item size variations.  This would clutter up the search results, so there needs to be a method
    * for removing duplicate items.
-   * 
-   * @param {array} items 
+   *
+   * @param {array} items
    */
   deDupeItems(items) {
     let uniqueItems = [];
@@ -306,13 +251,7 @@ class App extends React.Component {
           <Switch>
             {
               routes.map((route) => {
-                let props = {...route, filters, keyword, items: filteredItems }
-                if (route.path === '/mods') {
-                  filters = filters.mods;
-                  filterProps = filterProps.mods;
-                  props = {...props, filters, filterProps,  handleModFilterChange: this.handleModFilterChange}
-                }
-                return <RouteWithSubRoutes key={category.toLowerCase()} {...props} />
+                return <RouteWithSubRoutes {...route} key={category.toLowerCase()} />
               })
             }
           </Switch>
