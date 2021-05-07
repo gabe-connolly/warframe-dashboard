@@ -9,16 +9,14 @@ import React, {useEffect, useState} from 'react';
  * @param {array} items
  */
 export function deDupeItems(items) {
-    let uniqueItems = [];
-    let deDupedItems = [];
+    let deDupedItems = {};
     // TODO: Change from an array search to a hashmap.
     items.forEach((item) => {
-        if (!uniqueItems.includes(item.name)) {
-            uniqueItems.push(item.name);
-            deDupedItems.push(item);
+        if (!deDupeItems.hasOwnProperty(item.name)) {
+            deDupedItems[item.name] = item;
         }
     })
-    return deDupedItems;
+    return Object.values(deDupedItems);
 }
 
 export function listItems(items, componentName, itemKey = 'uniqueName') {
@@ -42,7 +40,12 @@ export function stripLineSeparatorTags(string) {
  * @param {string} propName
  */
 export function getFilterProps(items, propName) {
+    if (!items || !items.length) {
+        return [];
+    }
+
     let propsList = new Set();
+
     items.forEach(mod => {
         propsList.add(mod[propName])
     });
@@ -73,11 +76,8 @@ export function stripDamageTypeTags(data) {
 
 
 export function useItemsData(category) {
-    let [itemCount, setItemCount] = useState(0);
+    const [itemCount, setItemCount] = useState(0);
     const [items, setItems] = useState([]);
-
-    // Can't perform a React state update on an unmounted component
-    // https://stackoverflow.com/a/60907638
     useEffect(() => {
         if (!category) {
             return;
@@ -91,6 +91,7 @@ export function useItemsData(category) {
                     itemData = stripDamageTypeTags(itemData);
                     itemData = stripLineSeparatorTags(itemData);
                     itemData = JSON.parse(itemData);
+                    itemData = deDupeItems(itemData);
                     setItems(itemData);
                     setItemCount(itemData.length);
                 }

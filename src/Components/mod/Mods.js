@@ -7,7 +7,22 @@ import * as itemDataController from '../../controllers/itemDataController';
 import StyledFilters from '../StyledSubFilters';
 
 function Mods({category}) {
+    const deDupeMods = (mods) => {
+        let deDupedMods = {};
+        mods.forEach(mod => {
+            const modLookupKey = `${mod.name}-fusion-levels-${mod.fusionLimit}`
+            if (!deDupedMods.hasOwnProperty(modLookupKey)) {
+                deDupedMods[modLookupKey] = mod;
+            }
+        })
+        return Object.values(deDupedMods);
+    }
+
+    const items = itemDataController.useItemsData(category);
+
     const [filteredItems, setFilteredItems] = useState([]);
+    console.log(filteredItems);
+
     // Currently active filters
     const [polarityFilter, setPolarityFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
@@ -18,66 +33,52 @@ function Mods({category}) {
     const [typeFilterOptions, setTypeFilterOptions] = useState([]);
     const [rarityFilterOptions, setRarityFilterOptions] = useState([]);
 
-    const deDupeMods = (mods) => {
-        let deDupeMods = {};
-        mods.forEach(mod => {
-            const modLookupKey = `${mod.name}-fusion-levels-${mod.fusionLimit}`
-            if (!deDupeMods.hasOwnProperty(modLookupKey)) {
-                deDupeMods[modLookupKey] = mod;
-            }
-        })
-        return Object.values(deDupeMods);
-    }
+    useEffect(() => {
+        const modPolarities = itemDataController.getFilterProps(items, 'polarity');
+        setPolarityFilterOptions(modPolarities);
+
+        const modTypes = itemDataController.getFilterProps(items, 'type');
+        setTypeFilterOptions(modTypes);
+
+        const modRarities = itemDataController.getFilterProps(items, 'rarity');
+        setRarityFilterOptions(modRarities);
+    }, [items])
+
+    useEffect(() => {
+        if (!polarityFilter) {
+            return;
+        }
+
+        setFilteredItems(filteredItems.filter(item => {
+            return item.polarity === polarityFilter
+        }))
+    }, [filteredItems, polarityFilter])
+
+    useEffect(() => {
+        if (!rarityFilter) {
+            return;
+        }
+
+        setFilteredItems(filteredItems.filter(item => {
+            return item.rarity === rarityFilter
+        }))
+    }, [filteredItems, rarityFilter])
+
+    useEffect(() => {
+        if (!typeFilter) {
+            return;
+        }
+
+        setFilteredItems(filteredItems.filter(item => {
+            return item.type === typeFilter
+        }))
+    }, [filteredItems, typeFilter])
 
     const resetFilters = () => {
         setPolarityFilter('');
         setTypeFilter('');
         setRarityFilter('');
     }
-
-    const items = deDupeMods(itemDataController.useItemsData(category));
-
-    useEffect(() => {
-        const filterMods = () => {
-            let filteredItems = [...items];
-            if (polarityFilter) {
-                filteredItems = filteredItems.filter(item => {
-                    return item.polarity === polarityFilter
-                })
-            }
-
-            if (typeFilter) {
-                filteredItems = filteredItems.filter(item => {
-                    return item.type === typeFilter
-                })
-            }
-
-            if (rarityFilter) {
-                filteredItems = filteredItems.filter(item => {
-                    return item.rarity === rarityFilter
-                })
-            }
-
-            setFilteredItems(filteredItems);
-        }
-
-        filterMods();
-    }, [polarityFilter, typeFilter, rarityFilter, items]);
-
-    useEffect(() => {
-        const modPolarities = itemDataController.getFilterProps(items, 'polarity');
-        setPolarityFilterOptions(modPolarities);
-    }, [items])
-
-    useEffect(() => {
-        const modTypes = itemDataController.getFilterProps(items, 'type');
-            setTypeFilterOptions(modTypes);
-    }, [items])
-
-    useEffect(() => {
-        const modRarities = itemDataController.getFilterProps(items, 'rarity');
-            setRarityFilterOptions(modRarities);
-    }, [items])
 
     const modFilters = [
         {
@@ -106,7 +107,7 @@ function Mods({category}) {
         }
     ]
 
-    return (
+   return (
         <>
         <StyledFilters>
             <label>Filter mods by:</label>
@@ -114,7 +115,7 @@ function Mods({category}) {
                 modFilters.map(filter => {
                     return (
                         <ModFilter
-                            key={filter.name}
+                            key={filter.defaultOption}
                             defaultOption={filter.defaultOption}
                             name={filter.name}
                             onChange={filter.onChange}
