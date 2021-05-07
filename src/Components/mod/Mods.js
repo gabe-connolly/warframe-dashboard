@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import { CDNBase } from '../utils';
 import { ModCard, StyledFusionLevels } from './ModStyles';
@@ -7,9 +6,7 @@ import StyledItemList from '../StyledItemList';
 import * as itemDataController from '../../controllers/itemDataController';
 import StyledFilters from '../StyledSubFilters';
 
-function Mods() {
-    let [itemCount, setItemCount] = useState(0);
-    const [items, setItems] = useState([]);
+function Mods({category}) {
     const [filteredItems, setFilteredItems] = useState([]);
     // Currently active filters
     const [polarityFilter, setPolarityFilter] = useState('');
@@ -38,25 +35,7 @@ function Mods() {
         setRarityFilter('');
     }
 
-    // Can't perform a React state update on an unmounted component
-    // https://stackoverflow.com/a/60907638
-    useEffect(() => {
-        let isMounted = true;
-        axios.get(`/warframe-dashboard/data/Mods.json`)
-            .then(response => {
-                if (isMounted) {
-                    let itemData = JSON.stringify(response.data);
-                    itemData = itemDataController.stripDamageTypeTags(itemData);
-                    itemData = itemDataController.stripLineSeparatorTags(itemData);
-                    itemData = JSON.parse(itemData);
-                    itemData = deDupeMods(itemData);
-                    setItems(itemData);
-                    setItemCount(itemData.length);
-                }
-            })
-
-            return () => { isMounted = false };
-    }, [itemCount]);
+    const items = deDupeMods(itemDataController.useItemsData(category));
 
     useEffect(() => {
         const filterMods = () => {
@@ -102,26 +81,26 @@ function Mods() {
 
     const modFilters = [
         {
-            'defaultOption': 'Polarity',
-            'options': polarityFilterOptions,
-            'value': polarityFilter,
-            'onChange': (event) => {
+            defaultOption: 'Polarity',
+            options: polarityFilterOptions,
+            value: polarityFilter,
+            onChange: (event) => {
                 setPolarityFilter(event.target.value);
             }
         },
         {
-            'defaultOption': 'Type',
-            'options': typeFilterOptions,
-            'value': typeFilter,
-            'onChange': (event) => {
+            defaultOption: 'Type',
+            options: typeFilterOptions,
+            value: typeFilter,
+            onChange: (event) => {
                 setTypeFilter(event.target.value);
             }
         },
         {
-            'defaultOption': 'Rarity',
-            'options': rarityFilterOptions,
-            'value': rarityFilter,
-            'onChange': (event) =>  {
+            defaultOption: 'Rarity',
+            options: rarityFilterOptions,
+            value: rarityFilter,
+            onChange: (event) =>  {
                 setRarityFilter(event.target.value);
             }
         }
@@ -135,6 +114,7 @@ function Mods() {
                 modFilters.map(filter => {
                     return (
                         <ModFilter
+                            key={filter.name}
                             defaultOption={filter.defaultOption}
                             name={filter.name}
                             onChange={filter.onChange}
@@ -146,6 +126,7 @@ function Mods() {
             }
             <button onClick={resetFilters}>Reset filters</button>
         </StyledFilters>
+
         <StyledItemList>
             <ModList items={filteredItems}/>
         </StyledItemList>

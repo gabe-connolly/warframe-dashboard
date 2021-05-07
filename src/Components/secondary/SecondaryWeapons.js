@@ -1,13 +1,12 @@
-import { CDNBase, validItemsList } from '../utils';
+import { CDNBase } from '../utils';
 import { ItemCard } from '../ItemCard';
 import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
 import StyledFilters from '../StyledSubFilters';
+import * as itemDataController from '../../controllers/itemDataController';
 
-const SecondaryWeapons = ({items}) => {
-    if (!validItemsList(items, 'secondary')) {
-        return null;
-    }
+const SecondaryWeapons = ({category}) => {
+    const items = itemDataController.useItemsData(category);
 
     return (
         <>
@@ -18,9 +17,7 @@ const SecondaryWeapons = ({items}) => {
         </StyledFilters>
 
         <StyledItemList>
-            {
-                items.map(item => <SecondaryWeaponCard key={item.name} {...item}/>)
-            }
+            {itemDataController.listItems(items, SecondaryWeaponCard)}
         </StyledItemList>
         </>
     )

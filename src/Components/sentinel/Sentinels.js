@@ -1,22 +1,17 @@
-import { CDNBase, validItemsList } from '../utils';
+import { CDNBase } from '../utils';
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
-import React from 'react';
 import ItemBuildComponent from '../ItemBuildComponent';
+import * as itemDataController from '../../controllers/itemDataController';
 
-
-const Sentinels = ({items}) => {
-    if (!validItemsList(items, 'sentinels')) {
-        return null;
-    }
+const Sentinels = ({category}) => {
+    const items = itemDataController.useItemsData(category);
 
     return (
         <StyledItemList>
-            {
-                items.map(item => <SentinelCard key={item.name} {...item}/>)
-            }
+            {itemDataController.listItems(items, SentinelCard)}
         </StyledItemList>
     )
 }
@@ -40,7 +35,7 @@ const ManufacturingRequirements = ({components, uniqueName}) => {
     }
 
     components = Object.entries(components);
-    
+
     return (
         <ItemDetailCard key={uniqueName}>
             {

@@ -2,14 +2,14 @@ import { CDNBase } from './utils';
 import { ItemCard } from './ItemCard';
 import StyledImage from './StyledImage';
 import StyledItemList from './StyledItemList';
-import React from 'react';
+import * as itemDataController from '../controllers/itemDataController';
 
-const GenericItemsList = (props) => {
+const GenericItems = ({category}) => {
+    const items = itemDataController.useItemsData(category);
+
     return (
         <StyledItemList>
-            {
-                props.items.map(item => <GenericItem key={item.name} {...item}/>)
-            }
+            {itemDataController.listItems(items, GenericItem)}
         </StyledItemList>
     )
 }
@@ -24,4 +24,4 @@ const GenericItem = ({description, imageName, name}) => {
     )
 }
 
-export default GenericItemsList;
+export default GenericItems;

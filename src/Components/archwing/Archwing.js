@@ -3,19 +3,19 @@ import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
-import React from 'react';
+import * as itemDataController from '../../controllers/itemDataController';
 
-const Archwings = ({items}) => {
+function Archwings({category}) {
+    const items = itemDataController.useItemsData(category);
+
     return (
         <StyledItemList>
-            {
-                items.map(item => <ArchwingCard key={item.name} {...item}/>)
-            }
+            {itemDataController.listItems(items, Archwing)}
         </StyledItemList>
     )
 }
 
-const ArchwingCard = ({abilities, description, imageName, name}) => {
+const Archwing = ({abilities, description, imageName, name}) => {
     return (
         <ItemCard>
             <StyledImage alt="" src={CDNBase + imageName}/>
@@ -30,7 +30,7 @@ const ArchwingCard = ({abilities, description, imageName, name}) => {
 const Abilities = ({abilities}) => {
     if (abilities === undefined) {
         return null;
-    } 
+    }
 
     return abilities.map((ability) => {
         return <Ability key={ability.name} {...ability} />

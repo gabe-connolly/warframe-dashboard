@@ -2,8 +2,17 @@ import { CDNBase } from '../utils';
 import { ItemCard } from '../ItemCard';
 import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
+import * as itemDataController from '../../controllers/itemDataController';
 
-const React = require('react');
+function Fish({category}) {
+    const items = itemDataController.useItemsData(category);
+
+    return (
+        <StyledItemList>
+            {itemDataController.listItems(items, FishCard)}
+        </StyledItemList>
+    )
+}
 
 const FishCard = ({description, imageName, name}) => {
     return (
@@ -12,16 +21,6 @@ const FishCard = ({description, imageName, name}) => {
             <h1>{name}</h1>
             <p>{description}</p>
         </ItemCard>
-    )
-}
-
-const Fish = ({items}) => {
-    return (
-        <StyledItemList>
-            {
-                items.map(item => <FishCard key={item.name} {...item}/>)
-            }
-        </StyledItemList>
     )
 }
 

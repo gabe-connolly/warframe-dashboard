@@ -1,5 +1,3 @@
-import axios from 'axios';
-import React, {useEffect, useState} from 'react';
 import { CDNBase } from '../utils';
 import { ItemMain, ItemCard } from '../ItemCard';
 import ArcaneRank from './ArcaneRank';
@@ -7,28 +5,12 @@ import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
 import * as itemDataController from '../../controllers/itemDataController';
 
-function Arcanes() {
-    let [itemCount, setItemCount] = useState(0);
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        let isMounted = true;
-        axios.get(`http://localhost:3000/warframe-dashboard/data/Arcanes.json`)
-            .then(response => {
-                if (isMounted) {
-                    setItems(response.data);
-                    setItemCount(response.data.length);
-                }
-            })
-
-        return () => { isMounted = false };
-    }, [itemCount]);
+function Arcanes({category}) {
+    const items = itemDataController.useItemsData(category);
 
     return (
         <StyledItemList>
-            {
-                items.map(item => <ArcaneCard key={item.uniqueName} {...item}/>)
-            }
+            {itemDataController.listItems(items, ArcaneCard)}
         </StyledItemList>
     )
 }
