@@ -24,22 +24,10 @@ class App extends React.Component {
       items: {},
       filters: {
         category: '',
-        keyword: '',
-        mods: {
-          type: '',
-          polarity: '',
-          rarity: '',
-        }
       },
       filterProps: {
         categories: itemCategories,
-        mods: {
-          type: [],
-          polarity: [],
-          rarity: [],
-        }
       },
-      filteredItems: [],
       jsonLoaded: false,
     }
   }
@@ -53,14 +41,8 @@ class App extends React.Component {
   }
 
   render() {
-    let {
-      filters,
-    } = this.state;
-
-    const {
-      keyword,
-      category,
-    } = filters;
+    let { filters } = this.state;
+    const { category } = filters;
 
     const categoryOptions = itemCategories.map(category => {
       return <option key={category} value={category}>{category}</option>
@@ -70,7 +52,7 @@ class App extends React.Component {
       <Router basename="/warframe-dashboard">
         <main>
           <StyledFilters>
-              <input type="text" name="keyword" value={keyword} onChange={this.handleFilterChange('keyword')}/>
+              <label for="category">Select an item category</label>
               <select name="category" value={category} onChange={this.handleFilterChange('category')}>
                 <option value=''>-- Category --</option>
                 {categoryOptions}

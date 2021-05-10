@@ -7,26 +7,26 @@ import * as itemDataController from '../../controllers/itemDataController';
 import StyledFilters from '../StyledSubFilters';
 
 function Mods({category}) {
-    const deDupeMods = (mods) => {
+    const scrubbedModData = (mods) => {
         let deDupedMods = {};
         mods.forEach(mod => {
             const modLookupKey = `${mod.name}-fusion-levels-${mod.fusionLimit}`
-            if (!deDupedMods.hasOwnProperty(modLookupKey)) {
+            if (!deDupedMods.hasOwnProperty(modLookupKey) && mod.levelStats) {
                 deDupedMods[modLookupKey] = mod;
             }
         })
         return Object.values(deDupedMods);
     }
 
-    const items = itemDataController.useItemsData(category);
+    const items = itemDataController.useItemsData(category, [scrubbedModData]);
 
-    const [filteredItems, setFilteredItems] = useState([]);
-    console.log(filteredItems);
+    const [filteredItems, setFilteredItems] = useState();
 
     // Currently active filters
+    const [keywordFilter, setKeywordFilter] = useState('')
     const [polarityFilter, setPolarityFilter] = useState('');
-    const [typeFilter, setTypeFilter] = useState('');
     const [rarityFilter, setRarityFilter] = useState('');
+    const [typeFilter, setTypeFilter] = useState('');
 
     // Filter options
     const [polarityFilterOptions, setPolarityFilterOptions] = useState([]);
@@ -44,40 +44,64 @@ function Mods({category}) {
         setRarityFilterOptions(modRarities);
     }, [items])
 
-    useEffect(() => {
-        if (!polarityFilter) {
-            return;
-        }
-
-        setFilteredItems(filteredItems.filter(item => {
+    const filterItemsByPolarity = items => {
+        return items.filter(item => {
             return item.polarity === polarityFilter
-        }))
-    }, [filteredItems, polarityFilter])
+        })
+    }
 
-    useEffect(() => {
-        if (!rarityFilter) {
-            return;
-        }
-
-        setFilteredItems(filteredItems.filter(item => {
+    const filterItemsByRarity = items => {
+        return items.filter(item => {
             return item.rarity === rarityFilter
-        }))
-    }, [filteredItems, rarityFilter])
+        })
+    }
+
+    const filterItemsByType = items => {
+        return items.filter(item => {
+            return item.type === typeFilter
+        })
+    }
+
+    const filterItemsByKeyword = items => {
+        return items.filter(item => {
+            return item.name.toLowerCase().includes(keywordFilter.toLowerCase());
+        })
+    }
 
     useEffect(() => {
-        if (!typeFilter) {
+        let filteredItems = [...items];
+        const noActiveFilters = !polarityFilter && !rarityFilter && !typeFilter && !keywordFilter;
+
+        if (noActiveFilters) {
+            const subSet = filteredItems.slice(0, 99);
+            setFilteredItems(subSet);
             return;
         }
 
-        setFilteredItems(filteredItems.filter(item => {
-            return item.type === typeFilter
-        }))
-    }, [filteredItems, typeFilter])
+        if (polarityFilter) {
+            filteredItems = filterItemsByPolarity(filteredItems);
+        }
+
+        if (rarityFilter) {
+            filteredItems = filterItemsByRarity(filteredItems);
+        }
+
+        if (typeFilter) {
+            filteredItems = filterItemsByType(filteredItems);
+        }
+
+        if (keywordFilter) {
+            filteredItems = filterItemsByKeyword(filteredItems);
+        }
+        setFilteredItems(filteredItems);
+    }, [keywordFilter, polarityFilter, rarityFilter, typeFilter])
+
 
     const resetFilters = () => {
+        setKeywordFilter('');
         setPolarityFilter('');
-        setTypeFilter('');
         setRarityFilter('');
+        setTypeFilter('');
     }
 
     const modFilters = [
@@ -107,7 +131,7 @@ function Mods({category}) {
         }
     ]
 
-   return (
+    return (
         <>
         <StyledFilters>
             <label>Filter mods by:</label>
@@ -125,6 +149,7 @@ function Mods({category}) {
                     )
                 })
             }
+            <input type="text" placeholder="keyword" name="keyword" value={keywordFilter} onChange={(e) => setKeywordFilter(e.target.value)}/>
             <button onClick={resetFilters}>Reset filters</button>
         </StyledFilters>
 
@@ -136,6 +161,10 @@ function Mods({category}) {
 }
 
 const ModList = ({items}) => {
+    if (!items) {
+        return [];
+    }
+
     return items.map(mod => {
         const modKey = `${mod.name}-limit-${mod.fusionLimit}`;
         return (

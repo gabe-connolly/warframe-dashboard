@@ -75,7 +75,7 @@ export function stripDamageTypeTags(data) {
 }
 
 
-export function useItemsData(category) {
+export function useItemsData(category, processingFunctions = []) {
     const [itemCount, setItemCount] = useState(0);
     const [items, setItems] = useState([]);
     useEffect(() => {
@@ -92,13 +92,20 @@ export function useItemsData(category) {
                     itemData = stripLineSeparatorTags(itemData);
                     itemData = JSON.parse(itemData);
                     itemData = deDupeItems(itemData);
+
+                    if (processingFunctions) {
+                        processingFunctions.forEach(fn => {
+                            itemData = fn(itemData)
+                        })
+                    }
+
                     setItems(itemData);
                     setItemCount(itemData.length);
                 }
             })
 
             return () => { isMounted = false };
-    }, [itemCount, category]);
+    }, [itemCount, category, processingFunctions]);
 
     return items;
 }
