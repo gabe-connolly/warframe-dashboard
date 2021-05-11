@@ -1,7 +1,6 @@
 import { CDNBase } from '../utils';
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
-import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
 import ItemBuildComponent from '../ItemBuildComponent';
 import * as itemDataController from '../../controllers/itemDataController';
@@ -19,7 +18,7 @@ const Sentinels = ({category}) => {
 const SentinelCard = (props) => {
     return (
         <ItemCard>
-            <StyledImage alt="" src={CDNBase + props.imageName} className="small"/>
+            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + props.imageName + ')' }}/>
             <h1>{props.name}</h1>
             <p>{props.description}</p>
             <p>Armor: {props.armor}</p>
@@ -54,7 +53,6 @@ const ManufacturingRequirement = (props) => {
     return (
         <ItemBuildComponent>
             <p>{props[1].name} x {props[1].itemCount}</p>
-            <StyledImage title={description} alt={description} src={CDNBase + props[1].imageName}/>
         </ItemBuildComponent>
     )
 }

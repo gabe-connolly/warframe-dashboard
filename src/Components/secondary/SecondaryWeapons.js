@@ -1,6 +1,5 @@
 import { CDNBase } from '../utils';
 import { ItemCard } from '../ItemCard';
-import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
 import StyledFilters from '../StyledSubFilters';
 import * as itemDataController from '../../controllers/itemDataController';
@@ -76,7 +75,7 @@ const getWeaponFilterOptions = (weapons, property) => {
 const SecondaryWeaponCard = ({description, imageName, name}) => {
     return (
         <ItemCard>
-            <StyledImage alt="" src={CDNBase + imageName}/>
+            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + imageName + ')' }}/>
             <h1>{name}</h1>
             <p>{description}</p>
         </ItemCard>

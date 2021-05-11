@@ -1,7 +1,6 @@
 import { CDNBase } from '../utils';
 import { ItemMain, ItemCard } from '../ItemCard';
 import ArcaneRank from './ArcaneRank';
-import StyledImage from '../StyledImage';
 import StyledItemList from '../StyledItemList';
 import * as itemDataController from '../../controllers/itemDataController';
 
@@ -22,7 +21,7 @@ const ArcaneCard = ({levelStats, imageName, name}) => {
 
     return (
         <ItemCard>
-            <StyledImage alt="" src={CDNBase + imageName}/>
+            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + imageName + ')' }}/>
             <ItemMain>
                 <h1>{name}</h1>
                 <div className="item-details">

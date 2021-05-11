@@ -7,6 +7,7 @@ const ItemCard = styled.li`
     border-radius: 5px;
     box-shadow: inset 0 0 100px rgba(199,178,110,0.3);
     color: #F8F5CB;
+    flex-basis: 256px;
     margin: 10px;
     max-width: 256px;
     overflow:hidden;

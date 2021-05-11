@@ -3,7 +3,6 @@ import { ItemCard } from '../ItemCard';
 
 const ModCard = styled(ItemCard)`
     display:flex;
-    flex-basis: 256px;
     justify-content: space-evenly;
     flex-direction: column;
     justify-content: space-between;

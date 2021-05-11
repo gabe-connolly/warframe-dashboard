@@ -173,14 +173,7 @@ const ModList = ({items}) => {
     })
 }
 
-const Mod = (props) => {
-    const backgroundImageUrl = CDNBase + props.imageName;
-    const figureStyle = {
-        color: 'red',
-        backgroundImage: `url("${backgroundImageUrl}")`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'top center',
-    }
+const Mod = ({ fusionLimit, imageName, levelStats, name, rarity, uniqueName}) => {
 
     const FusionLevels = (props) => {
         let fusionLimit = Array.apply(null, Array(props.fusionLimit));
@@ -191,17 +184,17 @@ const Mod = (props) => {
         return <StyledFusionLevels>{fusionLimit}</StyledFusionLevels>
     }
 
-    const modLevels = props.levelStats;
+    const modLevels = levelStats;
     const maxModLevelIndex = modLevels !== undefined ? modLevels.length - 1 : false;
     let maxModLevelStats = maxModLevelIndex ? modLevels[maxModLevelIndex].stats : [];
     maxModLevelStats = maxModLevelStats.map((stat, idx) => <div className="stat" key={idx}>{stat}</div>)
 
     return (
-        <ModCard key={props.uniqueName} className={props.rarity.toLowerCase()}>
-            <figure style={figureStyle}></figure>
-            <h1>{props.name}</h1>
+        <ModCard key={uniqueName} className={rarity.toLowerCase()}>
+            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + imageName + ')' }}/>
+            <h1>{name}</h1>
             {maxModLevelStats}
-            <FusionLevels fusionLimit={props.fusionLimit}/>
+            <FusionLevels fusionLimit={fusionLimit}/>
         </ModCard>
     )
 }
