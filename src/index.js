@@ -41,11 +41,10 @@ class App extends React.Component {
   }
 
   render() {
-    let { filters } = this.state;
-    const { category } = filters;
+    let { category } = this.state.filters;
 
-    const categoryOptions = itemCategories.map(category => {
-      return <option key={category} value={category}>{category}</option>
+    const categoryOptions = itemCategories.map(itemCategory => {
+      return <option key={itemCategory} value={itemCategory}>{itemCategory}</option>
     })
 
     return (

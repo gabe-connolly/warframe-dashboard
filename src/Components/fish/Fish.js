@@ -1,7 +1,8 @@
-import { CDNBase } from '../utils';
 import { ItemCard } from '../ItemCard';
-import StyledItemList from '../StyledItemList';
 import * as itemDataController from '../../controllers/itemDataController';
+import {ItemFigure} from '../GenericItem';
+import StyledItemList from '../StyledItemList';
+
 
 function Fish({category}) {
     const items = itemDataController.useItemsData(category);
@@ -16,7 +17,7 @@ function Fish({category}) {
 const FishCard = ({description, imageName, name}) => {
     return (
         <ItemCard>
-            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + imageName + ')' }}/>
+            <ItemFigure imageName={imageName}/>
             <h1>{name}</h1>
             <p>{description}</p>
         </ItemCard>

@@ -1,7 +1,7 @@
-import { CDNBase } from '../utils';
 import { ItemMain, ItemCard } from '../ItemCard';
 import ArcaneRank from './ArcaneRank';
 import StyledItemList from '../StyledItemList';
+import {ItemFigure} from '../GenericItem';
 import * as itemDataController from '../../controllers/itemDataController';
 
 function Arcanes({category}) {
@@ -21,7 +21,7 @@ const ArcaneCard = ({levelStats, imageName, name}) => {
 
     return (
         <ItemCard>
-            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + imageName + ')' }}/>
+            <ItemFigure imageName={imageName}/>
             <ItemMain>
                 <h1>{name}</h1>
                 <div className="item-details">

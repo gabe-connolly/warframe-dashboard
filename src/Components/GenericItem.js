@@ -1,4 +1,3 @@
-import { CDNBase } from './utils';
 import { ItemCard } from './ItemCard';
 import StyledItemList from './StyledItemList';
 import * as itemDataController from '../controllers/itemDataController';
@@ -16,11 +15,17 @@ const GenericItems = ({category}) => {
 const GenericItem = ({description, imageName, name}) => {
     return (
         <ItemCard>
-            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + imageName + ')' }}/>
-            <h1>{name}</h1>
-            <p>{description}</p>
+            <ItemFigure imageName={imageName}/>
+            <h1>{name.trim()}</h1>
+            <p>{description.trim()}</p>
         </ItemCard>
     )
 }
 
-export default GenericItems;
+const ItemFigure = ({imageName}) => {
+    return (
+        <figure className='styled-figure' style={{ backgroundImage: 'url(' + itemDataController.CDNBase + imageName + ')' }}/>
+    )
+}
+
+export { GenericItems, ItemFigure } ;

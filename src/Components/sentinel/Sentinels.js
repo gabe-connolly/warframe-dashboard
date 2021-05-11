@@ -1,4 +1,4 @@
-import { CDNBase } from '../utils';
+import {ItemFigure} from '../GenericItem';
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import StyledItemList from '../StyledItemList';
@@ -15,15 +15,15 @@ const Sentinels = ({category}) => {
     )
 }
 
-const SentinelCard = (props) => {
+const SentinelCard = ({armor, components, description, imageName, name}) => {
     return (
         <ItemCard>
-            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + props.imageName + ')' }}/>
-            <h1>{props.name}</h1>
-            <p>{props.description}</p>
-            <p>Armor: {props.armor}</p>
+            <ItemFigure imageName={imageName}/>
+            <h1>{name}</h1>
+            <p>{description}</p>
+            <p>Armor: {armor}</p>
             <h3>Manufacturing Requirements</h3>
-            <ManufacturingRequirements components={props.components} />
+            <ManufacturingRequirements components={components} />
         </ItemCard>
     )
 }

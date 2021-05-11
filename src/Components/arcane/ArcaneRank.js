@@ -9,16 +9,16 @@ const StyledArcanerank = styled.div`
 
     .rank-outer {
         border: 2px solid #C7C5A8;
-        height: 2em;
+        height: 1.5em;
         transform: rotate(45deg);
-        width: 2em;
+        width: 1.5em;
         text-align: center;
     }
-    
+
     .rank-inner {
-        height: 2em;
-        width: 2em;
-        line-height: 2em;
+        height: 1.5em;
+        width: 1.5em;
+        line-height: 1.5em;
         transform: rotate(-45deg);
     }
 
@@ -37,7 +37,7 @@ const ArcaneRank = (props) => {
                 <div className="rank-outer">
                     <div className="rank-inner">{level}</div>
                 </div>
-            
+
                 <div className="description">
                     {levelDescription}
                 </div>
@@ -45,4 +45,5 @@ const ArcaneRank = (props) => {
         </StyledArcanerank>
     )
 }
+
 export default ArcaneRank;

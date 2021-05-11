@@ -3,7 +3,6 @@ export const itemCategories = [
     'Archwing',
     'Arch-Gun',
     'Arch-Melee',
-    'Enemy',
     'Fish',
     'Gear',
     'Glyphs',

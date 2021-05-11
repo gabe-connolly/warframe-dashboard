@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 
+export const CDNBase = 'https://cdn.warframestat.us/img/';
+
 /**
  * Some categories of item (e.g. Fish) have multiple entries for a single type of item to accomodate
  * for item size variations.  This would clutter up the search results, so there needs to be a method
@@ -26,6 +28,10 @@ export function listItems(items, componentName, itemKey = 'uniqueName') {
             <Component key={item[itemKey]} {...item}/>
         )
     })
+}
+
+export function stripPhTag(string) {
+    return string.replace(/\[Ph\]/gi, '');
 }
 
 export function stripLineSeparatorTags(string) {
@@ -74,7 +80,6 @@ export function stripDamageTypeTags(data) {
     return data.replace(regex, '');
 }
 
-
 export function useItemsData(category, processingFunctions = []) {
     const [itemCount, setItemCount] = useState(0);
     const [items, setItems] = useState([]);
@@ -90,6 +95,7 @@ export function useItemsData(category, processingFunctions = []) {
                     let itemData = JSON.stringify(response.data);
                     itemData = stripDamageTypeTags(itemData);
                     itemData = stripLineSeparatorTags(itemData);
+                    itemData = stripPhTag(itemData);
                     itemData = JSON.parse(itemData);
                     itemData = deDupeItems(itemData);
 
@@ -108,4 +114,8 @@ export function useItemsData(category, processingFunctions = []) {
     }, [itemCount, category, processingFunctions]);
 
     return items;
+}
+
+export function validItemsList(items, category) {
+    return items.length && items[0].category.toLowerCase() === category;
 }

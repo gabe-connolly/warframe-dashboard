@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { CDNBase } from '../utils';
+import { ItemFigure } from '../GenericItem';
 import { ModCard, StyledFusionLevels } from './ModStyles';
 import ModFilter from './ModFilter';
 import StyledItemList from '../StyledItemList';
@@ -191,7 +191,7 @@ const Mod = ({ fusionLimit, imageName, levelStats, name, rarity, uniqueName}) =>
 
     return (
         <ModCard key={uniqueName} className={rarity.toLowerCase()}>
-            <figure className='styled-figure' style={{ backgroundImage: 'url(' + CDNBase + imageName + ')' }}/>
+            <ItemFigure imageName={imageName}/>
             <h1>{name}</h1>
             {maxModLevelStats}
             <FusionLevels fusionLimit={fusionLimit}/>
