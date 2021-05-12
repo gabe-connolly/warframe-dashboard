@@ -114,7 +114,6 @@ export function stripDamageTypeTags(data) {
 
 function scrubItemData(items) {
     let scrubbedItems = {};
-    // TODO: Change from an array search to a hashmap.
     items.forEach((item) => {
         if (!item.name.match(/\/Lotus\/Language\//gi)) {
             scrubbedItems[item.name] = item;

@@ -1,25 +1,54 @@
+import React, {useEffect, useState} from 'react';
 import { ItemCard } from './ItemCard';
 import StyledItemList from './StyledItemList';
 import StyledFilters from './StyledSubFilters';
 import * as itemDataController from '../controllers/itemDataController';
 
-const ResultsCount = ({count}) => {
+const ResultsCount = ({allItemsCount, filteredItemcount}) => {
+    const output = allItemsCount > 0 ? `Found ${filteredItemcount} results` : 'Loading...';
     return (
-        <span>Found {count} results</span>
+        <span>{output}</span>
     )
 }
 
 const GenericItems = ({category}) => {
     const items = itemDataController.useItemsData(category);
 
+    let [filteredItems, setFilteredItems] = useState([]);
+    const itemsCount = items.length;
+
+    // Currently active filters
+    const [keywordFilter, setKeywordFilter] = useState('')
+
+    useEffect(() => {
+        setFilteredItems(items);
+    }, [itemsCount])
+
+    useEffect(() => {
+        let filteredItems = [...items];
+
+        if (keywordFilter) {
+            filteredItems = itemDataController.filterItemsByKeyword(filteredItems, keywordFilter);
+        }
+
+        setFilteredItems(filteredItems);
+
+    }, [keywordFilter])
+
+    const resetFilters = () => {
+        setKeywordFilter('');
+    }
+
     return (
         <>
             <StyledFilters>
-                <ResultsCount count={items.length}/>
+                <input type="text" placeholder="keyword" name="keyword" value={keywordFilter} onChange={(e) => setKeywordFilter(e.target.value)}/>
+                <button onClick={resetFilters}>Reset filters</button>
+                <ResultsCount allItemsCount={items.length} filteredItemcount={filteredItems.length}/>
             </StyledFilters>
 
             <StyledItemList>
-                {itemDataController.listItems(items, GenericItem)}
+                {itemDataController.listItems(filteredItems, GenericItem)}
             </StyledItemList>
         </>
     )

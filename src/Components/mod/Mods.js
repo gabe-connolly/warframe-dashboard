@@ -74,7 +74,6 @@ function Mods({category}) {
         setFilteredItems(filteredItems);
     }, [keywordFilter, polarityFilter, rarityFilter, typeFilter])
 
-
     const resetFilters = () => {
         setKeywordFilter('');
         setPolarityFilter('');
