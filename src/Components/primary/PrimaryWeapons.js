@@ -6,7 +6,7 @@ import StyledItemList from '../StyledItemList';
 import StyledFilters from '../StyledSubFilters';
 import * as itemDataController from '../../controllers/itemDataController';
 
-const SecondaryWeapons = ({category}) => {
+const PrimaryWeapons = ({category}) => {
     const items = itemDataController.useItemsData(category);
     const itemsLength = items.length;
     const [filteredItems, setFilteredItems] = useState([]);
@@ -116,13 +116,13 @@ const SecondaryWeapons = ({category}) => {
         </StyledFilters>
 
         <StyledItemList>
-            {itemDataController.listItems(filteredItems, SecondaryWeapon)}
+            {itemDataController.listItems(filteredItems, PrimaryWeapon)}
         </StyledItemList>
         </>
     )
 }
 
-const SecondaryWeapon = ({description, imageName, name}) => {
+const PrimaryWeapon = ({description, imageName, name}) => {
     return (
         <ItemCard>
             <ItemFigure imageName={imageName}/>
@@ -132,4 +132,4 @@ const SecondaryWeapon = ({description, imageName, name}) => {
     )
 }
 
-export default SecondaryWeapons;
+export default PrimaryWeapons;

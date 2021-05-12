@@ -1,9 +1,9 @@
 import Arcanes from '../Components/arcane/Arcane';
 import Archwings from '../Components/archwing/Archwing';
-import Fish  from '../Components/fish/Fish';
 import {GenericItems} from '../Components/GenericItem';
 import Homepage from '../Components/homepage/Homepage';
 import Mods from '../Components/mod/Mods';
+import PrimaryWeapons from '../Components/primary/PrimaryWeapons';
 import SecondaryWeapons from '../Components/secondary/SecondaryWeapons';
 import Sentinels from '../Components/sentinel/Sentinels';
 
@@ -17,12 +17,12 @@ export const routes = [
       'component': Archwings,
     },
     {
-      'path': '/fish',
-      'component': Fish,
-    },
-    {
       'path': '/mods',
       'component': Mods,
+    },
+    {
+      'path': '/primary',
+      'component': PrimaryWeapons,
     },
     {
       'path': '/secondary',

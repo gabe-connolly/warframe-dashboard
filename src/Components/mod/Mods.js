@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { ItemFigure } from '../GenericItem';
+import { ItemFigure, ResultsCount } from '../GenericItem';
 import { ModCard, StyledFusionLevels } from './ModStyles';
-import ModFilter from './ModFilter';
+import ItemFilter from '../ItemFilter';
 import StyledItemList from '../StyledItemList';
 import * as itemDataController from '../../controllers/itemDataController';
 import StyledFilters from '../StyledSubFilters';
@@ -19,8 +19,9 @@ function Mods({category}) {
     }
 
     const items = itemDataController.useItemsData(category, [scrubbedModData]);
+    const itemsCount = items.length;
 
-    const [filteredItems, setFilteredItems] = useState();
+    let [filteredItems, setFilteredItems] = useState([]);
 
     // Currently active filters
     const [keywordFilter, setKeywordFilter] = useState('')
@@ -42,56 +43,33 @@ function Mods({category}) {
 
         const modRarities = itemDataController.getFilterProps(items, 'rarity');
         setRarityFilterOptions(modRarities);
-    }, [items])
 
-    const filterItemsByPolarity = items => {
-        return items.filter(item => {
-            return item.polarity === polarityFilter
-        })
-    }
-
-    const filterItemsByRarity = items => {
-        return items.filter(item => {
-            return item.rarity === rarityFilter
-        })
-    }
-
-    const filterItemsByType = items => {
-        return items.filter(item => {
-            return item.type === typeFilter
-        })
-    }
-
-    const filterItemsByKeyword = items => {
-        return items.filter(item => {
-            return item.name.toLowerCase().includes(keywordFilter.toLowerCase());
-        })
-    }
+        setFilteredItems(items);
+    }, [itemsCount])
 
     useEffect(() => {
         let filteredItems = [...items];
-        const noActiveFilters = !polarityFilter && !rarityFilter && !typeFilter && !keywordFilter;
 
+        const noActiveFilters = !polarityFilter && !rarityFilter && !typeFilter && !keywordFilter;
         if (noActiveFilters) {
-            const subSet = filteredItems.slice(0, 99);
-            setFilteredItems(subSet);
+            setFilteredItems(filteredItems ? filteredItems.slice(0, 99) : []);
             return;
         }
 
         if (polarityFilter) {
-            filteredItems = filterItemsByPolarity(filteredItems);
+            filteredItems = itemDataController.filterItemsByProp(filteredItems, 'polarity', polarityFilter);
         }
 
         if (rarityFilter) {
-            filteredItems = filterItemsByRarity(filteredItems);
+            filteredItems = itemDataController.filterItemsByProp(filteredItems, 'rarity', rarityFilter);
         }
 
         if (typeFilter) {
-            filteredItems = filterItemsByType(filteredItems);
+            filteredItems = itemDataController.filterItemsByProp(filteredItems, 'type', typeFilter);
         }
 
         if (keywordFilter) {
-            filteredItems = filterItemsByKeyword(filteredItems);
+            filteredItems = itemDataController.filterItemsByKeyword(filteredItems, keywordFilter);
         }
         setFilteredItems(filteredItems);
     }, [keywordFilter, polarityFilter, rarityFilter, typeFilter])
@@ -138,7 +116,7 @@ function Mods({category}) {
             {
                 modFilters.map(filter => {
                     return (
-                        <ModFilter
+                        <ItemFilter
                             key={filter.defaultOption}
                             defaultOption={filter.defaultOption}
                             name={filter.name}
@@ -151,6 +129,7 @@ function Mods({category}) {
             }
             <input type="text" placeholder="keyword" name="keyword" value={keywordFilter} onChange={(e) => setKeywordFilter(e.target.value)}/>
             <button onClick={resetFilters}>Reset filters</button>
+            <ResultsCount count={filteredItems.length}/>
         </StyledFilters>
 
         <StyledItemList>

@@ -1,16 +1,23 @@
 import { ItemMain, ItemCard } from '../ItemCard';
 import ArcaneRank from './ArcaneRank';
+import StyledFilters from '../StyledSubFilters';
 import StyledItemList from '../StyledItemList';
-import {ItemFigure} from '../GenericItem';
+import { ItemFigure, ResultsCount } from '../GenericItem';
 import * as itemDataController from '../../controllers/itemDataController';
 
 function Arcanes({category}) {
     const items = itemDataController.useItemsData(category);
 
     return (
-        <StyledItemList>
-            {itemDataController.listItems(items, ArcaneCard)}
-        </StyledItemList>
+        <>
+            <StyledFilters>
+                <ResultsCount count={items.length}/>
+            </StyledFilters>
+
+            <StyledItemList>
+                {itemDataController.listItems(items, ArcaneCard)}
+            </StyledItemList>
+        </>
     )
 }
 

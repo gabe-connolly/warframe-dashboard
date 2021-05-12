@@ -1,7 +1,8 @@
-import {ItemFigure} from '../GenericItem';
+import { ItemFigure, ResultsCount } from '../GenericItem';
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import StyledItemList from '../StyledItemList';
+import StyledFilters from '../StyledSubFilters';
 import ItemBuildComponent from '../ItemBuildComponent';
 import * as itemDataController from '../../controllers/itemDataController';
 
@@ -9,9 +10,14 @@ const Sentinels = ({category}) => {
     const items = itemDataController.useItemsData(category);
 
     return (
-        <StyledItemList>
-            {itemDataController.listItems(items, SentinelCard)}
-        </StyledItemList>
+        <>
+            <StyledFilters>
+                <ResultsCount count={items.length}/>
+            </StyledFilters>
+            <StyledItemList>
+                {itemDataController.listItems(items, SentinelCard)}
+            </StyledItemList>
+        </>
     )
 }
 

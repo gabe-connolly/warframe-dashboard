@@ -1,4 +1,4 @@
-const ModFilter = (props) => {
+const ItemFilter = (props) => {
     return (
         <select name={props.name} value={props.value} onChange={props.onChange}>
             <option key="default" value="">-- {props.defaultOption} --</option>;
@@ -9,4 +9,4 @@ const ModFilter = (props) => {
     )
 }
 
-export default ModFilter
+export default ItemFilter

@@ -10,7 +10,7 @@ export const CDNBase = 'https://cdn.warframestat.us/img/';
  *
  * @param {array} items
  */
-export function deDupeItems(items) {
+function deDupeItems(items) {
     let deDupedItems = {};
     // TODO: Change from an array search to a hashmap.
     items.forEach((item) => {
@@ -22,6 +22,10 @@ export function deDupeItems(items) {
 }
 
 export function listItems(items, componentName, itemKey = 'uniqueName') {
+    if (!items) {
+        return [];
+    }
+
     return items.map(item => {
         const Component = componentName;
         return (
@@ -39,6 +43,25 @@ export function stripLineSeparatorTags(string) {
     return string.replace(regex, '');
 }
 
+export function filterItemsByProp(items, propName, targetValue) {
+    return items.filter(item => {
+        switch (typeof item[propName]) {
+            case 'string':
+                return item[propName].toLowerCase() === targetValue.toLowerCase();
+            case 'number':
+                return item[propName] === targetValue;
+            default:
+                return false;
+        }
+    })
+}
+
+export function filterItemsByKeyword(items, keyword) {
+    return items.filter(item => {
+        return item.name.toLowerCase().includes(keyword.toLowerCase());
+    })
+}
+
 /**
  * Populate an array of properties than can be used to filter Mods.
  *
@@ -52,8 +75,17 @@ export function getFilterProps(items, propName) {
 
     let propsList = new Set();
 
-    items.forEach(mod => {
-        propsList.add(mod[propName])
+    items.forEach(item => {
+        switch(typeof item[propName]) {
+            case 'string':
+                if (item[propName].length) {
+                    propsList.add(item[propName])
+                }
+                break;
+            default:
+                propsList.add(item[propName])
+                break;
+        }
     });
 
     return [...propsList].sort();
@@ -80,6 +112,18 @@ export function stripDamageTypeTags(data) {
     return data.replace(regex, '');
 }
 
+function scrubItemData(items) {
+    let scrubbedItems = {};
+    // TODO: Change from an array search to a hashmap.
+    items.forEach((item) => {
+        if (!item.name.match(/\/Lotus\/Language\//gi)) {
+            scrubbedItems[item.name] = item;
+        }
+    })
+    return Object.values(scrubbedItems);
+
+}
+
 export function useItemsData(category, processingFunctions = []) {
     const [itemCount, setItemCount] = useState(0);
     const [items, setItems] = useState([]);
@@ -98,6 +142,7 @@ export function useItemsData(category, processingFunctions = []) {
                     itemData = stripPhTag(itemData);
                     itemData = JSON.parse(itemData);
                     itemData = deDupeItems(itemData);
+                    itemData = scrubItemData(itemData);
 
                     if (processingFunctions) {
                         processingFunctions.forEach(fn => {

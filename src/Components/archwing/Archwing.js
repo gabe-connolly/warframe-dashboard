@@ -1,16 +1,23 @@
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import * as itemDataController from '../../controllers/itemDataController';
-import {ItemFigure} from '../GenericItem';
+import { ItemFigure, ResultsCount } from '../GenericItem';
 import StyledItemList from '../StyledItemList';
+import StyledFilters from '../StyledSubFilters';
 
 function Archwings({category}) {
     const items = itemDataController.useItemsData(category);
 
     return (
-        <StyledItemList>
-            {itemDataController.listItems(items, Archwing)}
-        </StyledItemList>
+        <>
+            <StyledFilters>
+                <ResultsCount count={items.length}/>
+            </StyledFilters>
+
+            <StyledItemList>
+                {itemDataController.listItems(items, Archwing)}
+            </StyledItemList>
+        </>
     )
 }
 
