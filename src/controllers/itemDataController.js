@@ -125,6 +125,7 @@ function scrubItemData(items) {
 }
 
 export function useItemsData(category, processingFunctions = []) {
+
     const [itemCount, setItemCount] = useState(0);
     const [items, setItems] = useState([]);
     useEffect(() => {
@@ -156,7 +157,7 @@ export function useItemsData(category, processingFunctions = []) {
             })
 
             return () => { isMounted = false };
-    }, [itemCount, category, processingFunctions]);
+    }, [itemCount]);
 
     return items;
 }
