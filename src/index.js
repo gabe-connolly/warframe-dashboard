@@ -3,7 +3,7 @@
  * https://github.com/WFCD
  * https://github.com/WFCD/warframe-items
  */
- import React, {useEffect, useState} from 'react';
+ import React, {useState} from 'react';
 import ReactDOM  from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -37,7 +37,7 @@ const App = () => {
     <Router basename="/warframe-dashboard">
       <main>
         <StyledFilters>
-            <label for="category">Select an item category</label>
+            <label htmlFor="category">Select an item category</label>
             <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
               <CategoryOptions/>
             </select>
