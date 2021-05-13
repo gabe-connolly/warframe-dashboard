@@ -3,7 +3,7 @@
  * https://github.com/WFCD
  * https://github.com/WFCD/warframe-items
  */
-import React from 'react';
+ import React, {useEffect, useState} from 'react';
 import ReactDOM  from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -17,59 +17,43 @@ import { itemCategories } from './Components/item-categories';
 import StyledFilters from './Components/StyledSubFilters';
 import { routes } from './controllers/routesController';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: {},
-      filters: {
-        category: '',
-      },
-      filterProps: {
-        categories: itemCategories,
-      },
-      jsonLoaded: false,
+const CategoryOptions = () => {
+  return (
+    <>
+    <option value=''>-- Category --</option>
+    {
+      itemCategories.map(itemCategory => {
+        return <option key={itemCategory} value={itemCategory}>{itemCategory}</option>
+      })
     }
-  }
+    </>
+  )
+}
 
-  handleFilterChange = filterType => (event) => {
-    let filters = this.state.filters;
-    filters[filterType] = event.target.value;
-    this.setState({
-      filters
-    });
-  }
+const App = () => {
+  const [category, setCategory] = useState('');
 
-  render() {
-    let { category } = this.state.filters;
+  return (
+    <Router basename="/warframe-dashboard">
+      <main>
+        <StyledFilters>
+            <label for="category">Select an item category</label>
+            <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <CategoryOptions/>
+            </select>
+            <Redirect to={category.toLowerCase()} />
+        </StyledFilters>
 
-    const categoryOptions = itemCategories.map(itemCategory => {
-      return <option key={itemCategory} value={itemCategory}>{itemCategory}</option>
-    })
-
-    return (
-      <Router basename="/warframe-dashboard">
-        <main>
-          <StyledFilters>
-              <label for="category">Select an item category</label>
-              <select name="category" value={category} onChange={this.handleFilterChange('category')}>
-                <option value=''>-- Category --</option>
-                {categoryOptions}
-              </select>
-              <Redirect to={category.toLowerCase()} />
-          </StyledFilters>
-
-          <Switch>
-            {
-              routes.map((route) => {
-                return <RouteWithSubRoutes {...route} key={category.toLowerCase()} category={category} />
-              })
-            }
-          </Switch>
-        </main>
-      </Router>
-    )
-  }
+        <Switch>
+          {
+            routes.map((route) => {
+              return <RouteWithSubRoutes {...route} key={category.toLowerCase()} category={category} />
+            })
+          }
+        </Switch>
+      </main>
+    </Router>
+  )
 }
 
 // A special wrapper for <Route> that knows how to
