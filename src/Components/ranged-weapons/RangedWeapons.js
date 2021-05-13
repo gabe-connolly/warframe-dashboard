@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import { ItemFigure, ResultsCount } from '../GenericItem';
-import { ItemCard } from '../ItemCard';
+import * as itemDataController from '../../controllers/itemDataController';
 import ItemFilter from '../ItemFilter';
+import { ResultsCount } from '../GenericItem';
 import StyledItemList from '../StyledItemList';
 import StyledFilters from '../StyledSubFilters';
-import * as itemDataController from '../../controllers/itemDataController';
 
-const SecondaryWeapons = ({category}) => {
-    const items = itemDataController.useItemsData(category);
+const RangedWeapons = ({category, component}) => {
+    const [items, loading] = itemDataController.useItemsData(category);
     const itemsLength = items.length;
-    const [filteredItems, setFilteredItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([])
 
     // Currently active filters
     const [keywordFilter, setKeywordFilter] = useState('')
@@ -30,13 +29,12 @@ const SecondaryWeapons = ({category}) => {
     }
 
     useEffect(() => {
-        const ranks = itemDataController.getFilterProps(items, 'masteryReq').sort((a, b) => a - b);
-        setMasteryRankFilterOptions(ranks);
-
+        const mastery = itemDataController.getFilterProps(items, 'masteryReq').sort((a, b) => a - b);
         const noise = itemDataController.getFilterProps(items, 'noise');
-        setNoiseLevelFilterOptions(noise);
-
         const type = itemDataController.getFilterProps(items, 'type')
+
+        setMasteryRankFilterOptions(mastery);
+        setNoiseLevelFilterOptions(noise);
         setTypeFilterOptions(type);
 
         // Once items has been populated, set it as the default content for filteredItems
@@ -116,20 +114,10 @@ const SecondaryWeapons = ({category}) => {
         </StyledFilters>
 
         <StyledItemList>
-            {itemDataController.listItems(filteredItems, SecondaryWeapon)}
+            {itemDataController.listItems(filteredItems, component)}
         </StyledItemList>
         </>
     )
 }
 
-const SecondaryWeapon = ({description, imageName, name}) => {
-    return (
-        <ItemCard>
-            <ItemFigure imageName={imageName}/>
-            <h1>{name}</h1>
-            <p>{description}</p>
-        </ItemCard>
-    )
-}
-
-export default SecondaryWeapons;
+export default RangedWeapons;
