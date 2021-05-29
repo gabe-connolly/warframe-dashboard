@@ -3,19 +3,20 @@
  * https://github.com/WFCD
  * https://github.com/WFCD/warframe-items
  */
- import React, {useState} from 'react';
+ import React, {useEffect, useState} from 'react';
 import ReactDOM  from 'react-dom';
 import {
   BrowserRouter as Router,
   Redirect,
-  Route,
   Switch,
+  Route
 } from "react-router-dom";
+
 
 import './index.css';
 import { itemCategories } from './Components/item-categories';
 import StyledFilters from './Components/StyledSubFilters';
-import { routes } from './controllers/routesController';
+import { pages } from './controllers/pagesController';
 
 const CategoryOptions = () => {
   return (
@@ -35,23 +36,22 @@ const App = () => {
 
   return (
     <Router basename="/warframe-dashboard">
-      <main>
-        <StyledFilters>
-            <label htmlFor="category">Select an item category</label>
-            <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
-              <CategoryOptions/>
-            </select>
-            <Redirect to={category.toLowerCase()} />
-        </StyledFilters>
+      <Redirect to={category.toLowerCase()} />
+      <StyledFilters>
+          <label htmlFor="category">Select an item category</label>
+          <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <CategoryOptions/>
+          </select>
 
-        <Switch>
-          {
-            routes.map((route) => {
-              return <RouteWithSubRoutes {...route} key={category.toLowerCase()} category={category} />
-            })
-          }
-        </Switch>
-      </main>
+      </StyledFilters>
+
+      <Switch>
+        {
+          pages.map((route) => {
+            return <RouteWithSubRoutes {...route} key={category.toLowerCase()} category={category} />
+          })
+        }
+      </Switch>
     </Router>
   )
 }
@@ -63,19 +63,17 @@ function RouteWithSubRoutes(route) {
   return (
     <Route
       path={route.path}
-      render={
-        props => {
-          return (
-            // pass the sub-routes down to keep nesting
-            <route.component {...props} {...route} />
-          )
-        }
-      }
+      render={props => (
+        // pass the sub-routes down to keep nesting
+        <route.component {...props} {...route} />
+      )}
     />
   )
 }
 
 ReactDOM.render(
-  <App />,
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById('root')
 );

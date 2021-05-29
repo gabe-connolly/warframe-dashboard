@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import { ItemCard } from '../ItemCard';
 import ItemDetailCard from '../ItemDetailCard';
 import * as itemDataController from '../../controllers/itemDataController';
@@ -5,17 +6,26 @@ import { ItemFigure, ResultsCount } from '../GenericItem';
 import StyledItemList from '../StyledItemList';
 import StyledFilters from '../StyledSubFilters';
 
-function Archwings({category}) {
-    const items = itemDataController.useItemsData(category);
+function Archwings(props) {
+    const [items, loading] = itemDataController.useItemsData(props.category);
+    const [keywordFilter, setKeywordFilter] = useState('')
+
+    const resetFilters = () => {
+        setKeywordFilter('');
+    }
 
     return (
         <>
             <StyledFilters>
-                <ResultsCount count={items.length}/>
+                <input type="text" placeholder="keyword" name="keyword" value={keywordFilter} onChange={(e) => setKeywordFilter(e.target.value)}/>
+                <button onClick={resetFilters}>Reset filters</button>
+                <ResultsCount count={items.length} loading={loading}/>
             </StyledFilters>
 
             <StyledItemList>
-                {itemDataController.listItems(items, Archwing)}
+                {
+                    loading ? 'Loading...' : itemDataController.listItems(items, Archwing)
+                }
             </StyledItemList>
         </>
     )

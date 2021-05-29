@@ -124,41 +124,35 @@ function scrubItemData(items) {
 }
 
 export function useItemsData(category, processingFunctions = []) {
-
-    const [itemCount, setItemCount] = useState(0);
     const [items, setItems] = useState([]);
-    useEffect(() => {
-        if (!category) {
-            return;
-        }
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-        let isMounted = true;
+    useEffect(() => {
+        setLoading(true);
         axios.get(`/warframe-dashboard/data/${category}.json`)
             .then(response => {
-                if (isMounted) {
-                    let itemData = JSON.stringify(response.data);
-                    itemData = stripDamageTypeTags(itemData);
-                    itemData = stripLineSeparatorTags(itemData);
-                    itemData = stripPhTag(itemData);
-                    itemData = JSON.parse(itemData);
-                    itemData = deDupeItems(itemData);
-                    itemData = scrubItemData(itemData);
+                let itemData = JSON.stringify(response.data);
+                itemData = stripDamageTypeTags(itemData);
+                itemData = stripLineSeparatorTags(itemData);
+                itemData = stripPhTag(itemData);
+                itemData = JSON.parse(itemData);
+                itemData = deDupeItems(itemData);
+                itemData = scrubItemData(itemData);
 
-                    if (processingFunctions) {
-                        processingFunctions.forEach(fn => {
-                            itemData = fn(itemData)
-                        })
-                    }
-
-                    setItems(itemData);
-                    setItemCount(itemData.length);
+                if (processingFunctions) {
+                    processingFunctions.forEach(fn => {
+                        itemData = fn(itemData)
+                    })
                 }
+
+                setItems(itemData);
+                setLoading(false);
             })
+            .catch(setError);
+    }, [category]);
 
-            return () => { isMounted = false };
-    }, [itemCount]);
-
-    return items;
+    return [items, loading];
 }
 
 export function validItemsList(items, category) {

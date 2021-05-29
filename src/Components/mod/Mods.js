@@ -1,10 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import { ItemFigure, ResultsCount } from '../GenericItem';
+import { ItemFigure } from '../GenericItem';
 import { ModCard, StyledFusionLevels } from './ModStyles';
 import ItemFilter from '../ItemFilter';
 import StyledItemList from '../StyledItemList';
 import * as itemDataController from '../../controllers/itemDataController';
 import StyledFilters from '../StyledSubFilters';
+
+
+import {
+    LoadingIndicator,
+    ResultsCount
+} from '../filters/filterComponents'
 
 function Mods({category}) {
     const scrubbedModData = (mods) => {
@@ -18,7 +24,7 @@ function Mods({category}) {
         return Object.values(deDupedMods);
     }
 
-    const items = itemDataController.useItemsData(category, [scrubbedModData]);
+    const [items, loading] = itemDataController.useItemsData(category);
     const itemsCount = items.length;
 
     let [filteredItems, setFilteredItems] = useState([]);
@@ -128,7 +134,10 @@ function Mods({category}) {
             }
             <input type="text" placeholder="keyword" name="keyword" value={keywordFilter} onChange={(e) => setKeywordFilter(e.target.value)}/>
             <button onClick={resetFilters}>Reset filters</button>
-            <ResultsCount count={filteredItems.length}/>
+
+            {
+                !loading && items.length > 0 ? <ResultsCount count={filteredItems.length} /> : <LoadingIndicator loading={loading} />
+            }
         </StyledFilters>
 
         <StyledItemList>
@@ -163,7 +172,7 @@ const Mod = ({ fusionLimit, imageName, levelStats, name, rarity, uniqueName}) =>
     }
 
     const modLevels = levelStats;
-    const maxModLevelIndex = modLevels !== undefined ? modLevels.length - 1 : false;
+    const maxModLevelIndex = modLevels !== undefined ? modLevels.length - 1 : null;
     let maxModLevelStats = maxModLevelIndex ? modLevels[maxModLevelIndex].stats : [];
     maxModLevelStats = maxModLevelStats.map((stat, idx) => <div className="stat" key={idx}>{stat}</div>)
 

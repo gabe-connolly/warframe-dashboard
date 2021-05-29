@@ -4,26 +4,24 @@ import StyledItemList from './StyledItemList';
 import StyledFilters from './StyledSubFilters';
 import * as itemDataController from '../controllers/itemDataController';
 
-const ResultsCount = ({allItemsCount, filteredItemcount}) => {
-    const output = allItemsCount > 0 ? `Found ${filteredItemcount} results` : 'Loading...';
-    return (
-        <span>{output}</span>
-    )
-}
+import {
+    LoadingIndicator,
+    ResultsCount
+} from './filters/filterComponents'
 
 const GenericItems = ({category}) => {
-    const items = itemDataController.useItemsData(category);
-
+    const [items, loading] = itemDataController.useItemsData(category);
+    const [totalItemCount, setTotalItemCount] = useState(0);
     let [filteredItems, setFilteredItems] = useState([]);
-    const itemsCount = items.length;
-
-    // Currently active filters
     const [keywordFilter, setKeywordFilter] = useState('')
 
+    // Set filtered items once items has loaded an initial data set.
     useEffect(() => {
         setFilteredItems(items);
-    }, [itemsCount])
+        setTotalItemCount(items.length)
+    }, [loading])
 
+    // Update the filtered items list when the keyword filter is updated.
     useEffect(() => {
         let filteredItems = [...items];
 
@@ -32,7 +30,6 @@ const GenericItems = ({category}) => {
         }
 
         setFilteredItems(filteredItems);
-
     }, [keywordFilter])
 
     const resetFilters = () => {
@@ -44,11 +41,15 @@ const GenericItems = ({category}) => {
             <StyledFilters>
                 <input type="text" placeholder="keyword" name="keyword" value={keywordFilter} onChange={(e) => setKeywordFilter(e.target.value)}/>
                 <button onClick={resetFilters}>Reset filters</button>
-                <ResultsCount allItemsCount={items.length} filteredItemcount={filteredItems.length}/>
+                {
+                    !loading && totalItemCount > 0 ? <ResultsCount count={filteredItems.length} /> : <LoadingIndicator />
+                }
             </StyledFilters>
 
             <StyledItemList>
-                {itemDataController.listItems(filteredItems, GenericItem)}
+                {
+                    loading ? 'Loading...' : itemDataController.listItems(filteredItems, GenericItem)
+                }
             </StyledItemList>
         </>
     )

@@ -1,13 +1,13 @@
 import Arcanes from '../Components/arcane/Arcane';
 import Archwings from '../Components/archwing/Archwing';
-import {GenericItems} from '../Components/GenericItem';
+import { GenericItems } from '../Components/GenericItem';
 import Homepage from '../Components/homepage/Homepage';
 import Mods from '../Components/mod/Mods';
 import PrimaryWeapons from '../Components/ranged-weapons/PrimaryWeapons';
 import SecondaryWeapons from '../Components/ranged-weapons/SecondaryWeapons';
 import Sentinels from '../Components/sentinel/Sentinels';
 
-export const routes = [
+export const pages = [
     {
       'path': '/arcanes',
       'component': Arcanes,

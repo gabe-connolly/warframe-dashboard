@@ -6,7 +6,7 @@ import { ItemFigure, ResultsCount } from '../GenericItem';
 import * as itemDataController from '../../controllers/itemDataController';
 
 function Arcanes({category}) {
-    const items = itemDataController.useItemsData(category);
+    const [items, loading] = itemDataController.useItemsData(category);
 
     return (
         <>
