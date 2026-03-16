@@ -1,0 +1,21 @@
+export const itemCategories = [
+	'Arcanes',
+	'Archwing',
+	'Arch-Gun',
+	'Arch-Melee',
+	'Fish',
+	'Gear',
+	'Glyphs',
+	'Melee',
+	'Misc',
+	'Mods',
+	'Pets',
+	'Primary',
+	'Quests',
+	'Relics',
+	'Resources',
+	'Secondary',
+	'Sentinels',
+	'Skins',
+	'Warframes'
+];
