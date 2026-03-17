@@ -1,0 +1,1 @@
+import{a as i,f as o}from"./Gx4yJaQu.js";import{d as s,r as d}from"./BSzSF-Iz.js";import{s as m}from"./ohEHo6eX.js";var l=o('<div class="detail-card svelte-1k193l8"><!></div>');function n(a,t){var r=l(),e=s(r);m(e,()=>t.children),d(r),i(a,r)}export{n as I};

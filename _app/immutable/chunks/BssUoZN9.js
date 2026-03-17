@@ -1,0 +1,1 @@
+import{a as o,f as m}from"./Gx4yJaQu.js";import{d as i,r as p,t as l}from"./BSzSF-Iz.js";import{s as f}from"./ohEHo6eX.js";import{s as c}from"./CHyb109j.js";import{p as d}from"./B63DElgC.js";var n=m("<li><!></li>");function I(a,t){let s=d(t,"class",3,"");var r=n(),e=i(r);f(e,()=>t.children),p(r),l(()=>c(r,1,`item-card ${s()??""}`,"svelte-t2ykpv")),o(a,r)}export{I};
