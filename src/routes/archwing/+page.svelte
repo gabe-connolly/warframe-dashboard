@@ -4,7 +4,6 @@
 	import ItemList from '$lib/components/ItemList.svelte';
 	import ItemCard from '$lib/components/ItemCard.svelte';
 	import ItemFigure from '$lib/components/ItemFigure.svelte';
-	import ItemDetailCard from '$lib/components/ItemDetailCard.svelte';
 	import ResultsCount from '$lib/components/ResultsCount.svelte';
 
 	let { data } = $props();
@@ -31,19 +30,10 @@
 
 <ItemList>
 	{#each filteredItems as item (item.uniqueName)}
-		<ItemCard>
+		<ItemCard {item}>
 			<ItemFigure imageName={item.imageName} />
 			<h1>{item.name}</h1>
 			<p>{item.description}</p>
-			<h3>Abilities</h3>
-			{#if item.abilities}
-				{#each item.abilities as ability}
-					<ItemDetailCard>
-						<h2>{ability.name}</h2>
-						<p>{ability.description}</p>
-					</ItemDetailCard>
-				{/each}
-			{/if}
 		</ItemCard>
 	{/each}
 </ItemList>

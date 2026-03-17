@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc:*)",
+      "Bash(cp:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "WebFetch(domain:api.warframestat.us)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "WebFetch(domain:docs.warframestat.us)",
+      "Bash(python3:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npm install:*)",
+      "Bash(grep:*)",
+      "Bash(git log:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(npx gh-pages:*)",
+      "Bash(git fetch:*)",
+      "Bash(ls:*)",
+      "WebSearch",
+      "WebFetch(domain:wiki.warframe.com)",
+      "WebFetch(domain:warframe.fandom.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:forums.warframe.com)",
+      "Bash(head:*)",
+      "Bash(jq:*)",
+      "WebFetch(domain:warframestat.us)",
+      "Bash(open:*)",
+      "WebFetch(domain:wfcd.github.io)"
+    ]
+  }
+}

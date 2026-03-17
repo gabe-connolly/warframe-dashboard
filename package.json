@@ -19,5 +19,9 @@
     "svelte": "^5.0.0",
     "vite": "^6.0.0",
     "warframe-items": "^1.1269.87"
+  },
+  "dependencies": {
+    "warframe-worldstate-data": "^3.9.1",
+    "warframe-worldstate-parser": "^5.2.17"
   }
 }

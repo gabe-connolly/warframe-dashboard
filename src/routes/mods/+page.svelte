@@ -80,7 +80,7 @@
 
 <ItemList>
 	{#each filteredItems as mod (`${mod.name}-limit-${mod.fusionLimit}`)}
-		<ModCard rarity={mod.rarity}>
+		<ModCard rarity={mod.rarity} item={mod}>
 			<ItemFigure imageName={mod.imageName} />
 			<h1>{mod.name}</h1>
 			{#if mod.levelStats}

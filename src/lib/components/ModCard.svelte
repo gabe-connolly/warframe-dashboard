@@ -1,9 +1,22 @@
-<li class="mod-card {rarity.toLowerCase()}">
+<li class="mod-card {rarity.toLowerCase()}" onclick={handleClick} role={item ? 'button' : undefined} tabindex={item ? 0 : undefined} onkeydown={handleKeydown}>
 	{@render children()}
 </li>
 
 <script>
-	let { children, rarity = 'rare' } = $props();
+	import { modal } from '$lib/modal.svelte.js';
+
+	let { children, rarity = 'rare', item = null } = $props();
+
+	function handleClick() {
+		if (item) modal.open(item);
+	}
+
+	function handleKeydown(e) {
+		if (item && (e.key === 'Enter' || e.key === ' ')) {
+			e.preventDefault();
+			modal.open(item);
+		}
+	}
 </script>
 
 <style>
@@ -23,6 +36,11 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		cursor: pointer;
+	}
+
+	.mod-card:hover {
+		box-shadow: inset 0 0 100px rgba(199,178,110,0.3), 0 0 15px rgba(181, 146, 78, 0.3);
 	}
 
 	.mod-card :global(h1) {

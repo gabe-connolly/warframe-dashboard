@@ -16,7 +16,7 @@
 <ItemList>
 	{#each data.items as item (item.uniqueName)}
 		{#if item.name !== 'Arcane'}
-			<ItemCard>
+			<ItemCard {item}>
 				<ItemFigure imageName={item.imageName} />
 				<main class="item-main">
 					<h1>{item.name}</h1>

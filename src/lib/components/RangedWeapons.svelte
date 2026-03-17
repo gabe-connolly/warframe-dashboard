@@ -73,7 +73,7 @@
 
 <ItemList>
 	{#each filteredItems as item (item.uniqueName)}
-		<ItemCard>
+		<ItemCard {item}>
 			<ItemFigure imageName={item.imageName} />
 			<h1>{item.name}</h1>
 			<p>{item.description}</p>

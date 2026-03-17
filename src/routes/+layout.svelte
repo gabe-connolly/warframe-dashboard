@@ -3,6 +3,7 @@
 	import { base } from '$app/paths';
 	import { itemCategories } from '$lib/categories.js';
 	import FilterBar from '$lib/components/FilterBar.svelte';
+	import ItemModal from '$lib/components/ItemModal.svelte';
 	import '../app.css';
 
 	let { children } = $props();
@@ -26,3 +27,5 @@
 </FilterBar>
 
 {@render children()}
+
+<ItemModal />
