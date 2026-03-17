@@ -1,40 +1,43 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Warframe dashboard - page not found</title>
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      // This script takes the current url and converts the path and query
-      // string into just a query string, and then redirects the browser
-      // to the new url with only a query string and hash fragment,
-      // e.g. https://www.foo.tld/one/two?a=b&c=d#qwe, becomes
-      // https://www.foo.tld/?/one/two&a=b~and~c=d#qwe
-      // Note: this 404.html file must be at least 512 bytes for it to work
-      // with Internet Explorer (it is currently > 512 bytes)
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/warframe-dashboard/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Warframe Dashboard</title>
+		<link href="/warframe-dashboard/_app/immutable/entry/start.D3QD-eTr.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/zTHXiWyh.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/CPkDmReL.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/DraoGmDv.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/DxT217U3.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/CYgJF_JY.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/entry/app.DELJtenP.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/CyZa0W97.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/DzY1pe4T.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/C3Q271x_.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/Bk_dxq8a.js" rel="modulepreload">
+		<link href="/warframe-dashboard/_app/immutable/chunks/tIm_LKpp.js" rel="modulepreload">
+		
+	</head>
+	<body id="body">
+		<div id="root">
+			<script>
+				{
+					__sveltekit_1hlcvry = {
+						base: "/warframe-dashboard",
+						assets: "/warframe-dashboard"
+					};
 
-      // If you're creating a Project Pages site and NOT using a custom domain,
-      // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
-      // This way the code will only replace the route part of the path, and not
-      // the real directory in which the app resides, for example:
-      // https://username.github.io/repo-name/one/two?a=b&c=d#qwe becomes
-      // https://username.github.io/repo-name/?/one/two&a=b~and~c=d#qwe
-      // Otherwise, leave pathSegmentsToKeep as 0.
-      var pathSegmentsToKeep = 1;
+					const element = document.currentScript.parentElement;
 
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-
-    </script>
-  </head>
-  <body>
-  </body>
+					Promise.all([
+						import("/warframe-dashboard/_app/immutable/entry/start.D3QD-eTr.js"),
+						import("/warframe-dashboard/_app/immutable/entry/app.DELJtenP.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		</div>
+	</body>
 </html>
