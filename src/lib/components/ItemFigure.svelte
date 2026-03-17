@@ -1,4 +1,4 @@
-<figure class="styled-figure" style="background-image: url({CDNBase}{imageName})"></figure>
+<figure class="styled-figure" style="background-image: url('{CDNBase}{imageName}')"></figure>
 
 <script>
 	import { CDNBase } from '$lib/data.js';
