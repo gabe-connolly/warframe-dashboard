@@ -3,11 +3,12 @@
 		<div class="rank-outer">
 			<div class="rank-inner">{level}</div>
 		</div>
-		<div class="description">{description}</div>
+		<div class="description"><DamageText text={description} /></div>
 	</div>
 </div>
 
 <script>
+	import DamageText from '$lib/components/DamageText.svelte';
 	let { level, description } = $props();
 </script>
 

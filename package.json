@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "sync": "node scripts/sync-data.js",
-    "deploy": "npm run sync && npm run build && gh-pages -d build"
+    "deploy": "npm run sync && npm run build && gh-pages -d build --dotfiles"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.0",

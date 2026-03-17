@@ -1,17 +1,10 @@
 export const CDNBase = 'https://cdn.warframestat.us/img/';
 
-export function stripDamageTypeTags(data) {
-	const regex = /<DT_([a-z]*)>/gi;
-	return data.replace(regex, '');
-}
-
-export function stripLineSeparatorTags(data) {
-	const regex = /<LINE_SEPARATOR>/gi;
-	return data.replace(regex, '');
-}
-
-export function stripPhTag(data) {
-	return data.replace(/\[Ph\]/gi, '');
+export function stripNonDamageTags(data) {
+	return data
+		.replace(/<LINE_SEPARATOR>/gi, '')
+		.replace(/\[Ph\]/gi, '')
+		.replace(/<(?!DT_)[A-Z_]{3,}>/g, '');
 }
 
 function deDupeItems(items) {
@@ -37,9 +30,7 @@ function scrubItemData(items) {
 export async function fetchItems(fetch, category) {
 	const response = await fetch(`/warframe-dashboard/data/${category}.json`);
 	let text = await response.text();
-	text = stripDamageTypeTags(text);
-	text = stripLineSeparatorTags(text);
-	text = stripPhTag(text);
+	text = stripNonDamageTags(text);
 	let items = JSON.parse(text);
 	items = deDupeItems(items);
 	items = scrubItemData(items);

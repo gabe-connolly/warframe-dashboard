@@ -22,8 +22,8 @@
 					<h1>{item.name}</h1>
 					<div class="item-details">
 						{#if item.levelStats}
-							{#each Object.entries(item.levelStats) as [level, stat]}
-								<ArcaneRank {level} description={stat.stats[0]} />
+							{#each item.levelStats as stat, level}
+								<ArcaneRank level={level} description={stat.stats.join('\n')} />
 							{/each}
 						{/if}
 					</div>
